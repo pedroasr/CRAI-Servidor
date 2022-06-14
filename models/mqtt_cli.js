@@ -12,17 +12,20 @@ class Mqtt_cli{
     
 }
 
+let topics = ['CRAIUPCTPersonCount','CRAIUPCT_BLEdata','CRAIUPCT_WifiData']
 const client = mqtt.connect('mqtt://localhost'); 
-const door = database.getCollection()
+const door = database.getCollection('DoorSensors')
+const ble = database.getCollection('BLE')
 
 client.on('connect', function () {
-  client.subscribe('CRAIUPCTPersonCount', function (err) {
+  client.subscribe(topics, function (err) {
     if (!err) {
       console.log("MQTT CLIENT CONNECTED")
     }
   })
 })
 
+/*
 function pad(n, z){
   z = z || 2;
 return ('00' + n).slice(-z);
@@ -39,15 +42,32 @@ const getFechaCompleta = () => {
               pad(d.getMilliseconds(),3)].join(':');
 
   return dformat;
-} 
+} */
 
-let msg = {}
+
 client.on('message', function (topic, message) {
+
+  switch(topic){
+
+    case 'CRAIUPCTPersonCount':
+      
+      door.insertOne(JSON.parse(message))
   
-    msg = JSON.parse(message);
-    //console.log(msg)
-    let c = door.insertOne(msg)
-    //console.log(c)
+      break;
+
+    case 'CRAIUPCT_BLEdata':
+      
+      ble.insertOne(JSON.parse(message));
+
+      break;
+
+    case 'CRAIUPCT_WifiData':
+
+      break;
+
+  }
+  
+    
 
 })
 

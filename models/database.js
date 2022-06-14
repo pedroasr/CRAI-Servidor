@@ -31,14 +31,11 @@ const getDatabase = () => {
     return db;
 }
 
-const getCollection = () => {   // == Table SQL
-    return db.collection('DoorSensors');
+const getCollection = (colec) => {   // == Table SQL
+    return db.collection(colec);
 }
 
-const store = (data) => {
 
-
-}
 
 
 module.exports = {getDatabase,getCollection};
