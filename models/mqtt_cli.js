@@ -16,6 +16,7 @@ let topics = ['CRAIUPCTPersonCount','CRAIUPCT_BLEdata','CRAIUPCT_WifiData']
 const client = mqtt.connect('mqtt://localhost'); 
 const door = database.getCollection('DoorSensors')
 const ble = database.getCollection('BLE')
+const wifi = database.getCollection('wifi')
 
 client.on('connect', function () {
   client.subscribe(topics, function (err) {
@@ -51,6 +52,7 @@ client.on('message', function (topic, message) {
 
     case 'CRAIUPCTPersonCount':
       
+      //console.log(JSON.parse(message))
       door.insertOne(JSON.parse(message))
   
       break;
@@ -62,6 +64,9 @@ client.on('message', function (topic, message) {
       break;
 
     case 'CRAIUPCT_WifiData':
+      
+      //console.log(JSON.parse(message))
+      wifi.insertOne(JSON.parse(message))
 
       break;
 
