@@ -1,7 +1,7 @@
 version: '3'
 services:
     mongo:
-        image: mongo:5.0.8
+        image: mongo:4.4.6
         container_name: 'mongo'
         command: mongod
         environment:
@@ -9,14 +9,6 @@ services:
         restart: always
         ports:
             - '27017:27017'
-    server:
-        container_name: server
-        image: eriktvj/fastify-mongo-emqx
-        depends_on:
-            - mongo
-        restart: always
-        ports:
-            - '4030:3099'
     emqx:
         container_name: emqx
         image: emqx:4.3.5
