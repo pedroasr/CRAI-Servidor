@@ -12,7 +12,7 @@ class Mqtt_cli{
     
 }
 
-let topics = ['CRAIUPCTPersonCount','CRAIUPCT_BLEdata','CRAIUPCT_WifiData']
+let topics = ['CRAIUPCTPersonCount','CRAIUPCT_BLEdata','CRAIUPCT_WifiData','keepalive']
 const client = mqtt.connect('mqtt://localhost'); 
 const door = database.getCollection('DoorSensors')
 const ble = database.getCollection('BLE')
