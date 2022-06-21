@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "dotenv": "^16.0.1",
     "fastify": "^4.0.2",
     "mongodb": "^4.7.0",
-    "mqtt": "^4.3.7"
+    "mqtt": "^4.3.7",
+    "node-telegram-bot-api": "^0.57.0"
   }
 }

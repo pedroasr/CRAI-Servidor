@@ -1,6 +1,6 @@
 const mqtt = require('mqtt')
 const database = require('./database')
-
+const botcrai = require('./bot_tel')
 
 class Mqtt_cli{
 
@@ -17,6 +17,7 @@ const client = mqtt.connect('mqtt://localhost');
 const door = database.getCollection('DoorSensors')
 const ble = database.getCollection('BLE')
 const wifi = database.getCollection('wifi')
+const monitor = database.getCollection('monitor')
 
 client.on('connect', function () {
   client.subscribe(topics, function (err) {
@@ -68,6 +69,13 @@ client.on('message', function (topic, message) {
       //console.log(JSON.parse(message))
       wifi.insertOne(JSON.parse(message))
 
+      break;
+    
+    case 'keepalive':
+
+      let rasp = JSON.parse(message)
+      botcrai.botSendMessage(`${rasp.id}--> T: ${rasp.temp}ºC`)
+      monitor.insertOne(JSON.parse(message))
       break;
 
   }
