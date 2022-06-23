@@ -30,12 +30,16 @@ username: 'Server',
 password: 'Server',
 }
 
-const connectUrl = "ws://10.147.18.134:8083/mqtt";
+const connectUrl = "ws://localhost:8083/mqtt";
 const client = mqtt.connect(connectUrl,options);
 
-client.on("connect", function () {
-  console.log("Connected to MQTT URL");
-});
+client.on('connect', function () {
+  client.subscribe(topics, function (err) {
+    if (!err) {
+      console.log("MQTT CLIENT CONNECTED")
+    }
+  })
+})
 
 /*
 function pad(n, z){
