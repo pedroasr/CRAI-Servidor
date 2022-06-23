@@ -54,7 +54,8 @@ let empty = {
   iface3status:'unknown',
   temp:0,
   tempstatus:'unknown',
-  BLEface:'unknown'
+  BLEface:'unknown',
+  error:true
 
 }
 
@@ -73,8 +74,12 @@ setInterval(()=>{
   for(let i = 0;i<6;i++){
 
     if(sniffers[i].updated){
-      sniffers.updated = false;
-      msg += `Raspberry ${i+1} tiene errores.\n`
+      sniffers[i].updated = false;
+
+      if(sniffers[i].error){
+        msg += `Raspberry ${i+1} tiene errores.\n`
+      }
+      
     }else{
       msg += `Raspberry ${i+1} no ha enviado nada.\n`
     }
@@ -87,9 +92,9 @@ setInterval(()=>{
 
 const saveMonitor = (dato) => {
 
-  console.log("Saving")
+  
   let id = parseInt((dato.id).split('y')[1])
-  console.log(id)
+  
 
   if(dato.id != "Raspberry6"){
 
@@ -111,12 +116,15 @@ const saveMonitor = (dato) => {
 
     if(dato.iface1 > sniffers[id-1].iface1 && dato.iface2 > sniffers[id-1].iface2 && dato.iface3 > sniffers[id-1].iface3 && dato.BLEface == 'OK' && dato.temp < maxTemp){
 
+      sniffers[id-1].error = false;
       if(!sniffers[id-1].updated)
         okCount++;
 
       
 
     }else{  //Checking what went wrong
+
+      sniffers[id-1].error = true;
 
       if(dato.iface1 == 'KO' || dato.iface1 <= sniffers[id-1].iface1)
         sniffers[id-1].iface1status = 'KO'
