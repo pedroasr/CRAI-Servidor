@@ -10,17 +10,6 @@ const bot = new TelegramBot(token, {polling: true});
 
 let sniffers= []
 
-for (let i = 0;i<6;i++){
-  sniffers[i].temp = 0
-  sniffers[i].iface1 = 0
-  sniffers[i].iface1status = "unknown"
-  sniffers[i].iface2 = 0
-  sniffers[i].iface1status = "unknown"
-  sniffers[i].iface3 = 0
-  sniffers[i].iface1status = "unknown"
-  sniffers[i].BLEface = "unknown"
-  sniffers[i].timestamp = "unknown"
-}
 
 // Matches "/echo [whatever]"
 bot.onText(/\/get (.+)/, (msg, match) => {
