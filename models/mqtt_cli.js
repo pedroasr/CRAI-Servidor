@@ -120,8 +120,10 @@ const saveMonitor = (dato) => {
       if(!sniffers[id-1].updated)
         okCount++;
 
+      sniffers[id-1].iface1 = dato.iface1
+      sniffers[id-1].iface2 = dato.iface2
+      sniffers[id-1].iface3 = dato.iface3
       
-
     }else{  //Checking what went wrong
 
       sniffers[id-1].error = true;
