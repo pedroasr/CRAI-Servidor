@@ -99,8 +99,12 @@ const saveMonitor = (dato) => {
     sniffers[id-1].iface2status = 'OK'
     sniffers[id-1].iface3status = 'OK'
     sniffers[id-1].tempstatus = 'OK'
+    sniffers[id-1].BLEface = 'OK'
     sniffers[id-1].id = dato.id
     sniffers[id-1].timestamp = dato.timestamp
+    sniffers[id-1].iface1 = dato.iface1
+    sniffers[id-1].iface2 = dato.iface2
+    sniffers[id-1].iface3 = dato.iface3
     
     sniffers[id-1].updated = true
 
