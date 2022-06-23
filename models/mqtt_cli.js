@@ -104,13 +104,13 @@ const saveMonitor = (dato) => {
     sniffers[id-1].iface2status = 'OK'
     sniffers[id-1].iface3status = 'OK'
     sniffers[id-1].tempstatus = 'OK'
-    sniffers[id-1].BLEface = 'OK'
+    sniffers[id-1].BLEface = dato.BLEface
     sniffers[id-1].id = dato.id
     sniffers[id-1].temp = dato.temp
     sniffers[id-1].timestamp = dato.timestamp
-    sniffers[id-1].iface1 = dato.iface1
+    /*sniffers[id-1].iface1 = dato.iface1
     sniffers[id-1].iface2 = dato.iface2
-    sniffers[id-1].iface3 = dato.iface3
+    sniffers[id-1].iface3 = dato.iface3*/
     
     sniffers[id-1].updated = true
 
@@ -126,23 +126,29 @@ const saveMonitor = (dato) => {
 
       sniffers[id-1].error = true;
 
-      if(dato.iface1 == 'KO' || dato.iface1 <= sniffers[id-1].iface1)
-        sniffers[id-1].iface1status = 'KO'
-
-
-      if(dato.iface2 == 'KO' || dato.iface2 <= sniffers[id-1].iface2)
-        sniffers[id-1].iface2status = 'KO'
+      if(dato.iface1 == 'KO'){
+        sniffers[id-1].iface1=0
+        sniffers[id-1].iface1status='KO'
+      }else if(dato.iface1 <= sniffers[id-1].iface1){
         
-      
-      if(dato.iface3 == 'KO' || dato.iface3 <= sniffers[id-1].iface3)
-        sniffers[id-1].iface3status = 'KO'
+        sniffers[id-1].iface1status = 'NoK'
+      }
         
-      
-
-      /*if(dato.BLEface == 'KO')
-        koSniff[id-1].BLEfacestatus = 'KO'*/
-      
+      if(dato.iface2 == 'KO'){
+        sniffers[id-1].iface2=0
+        sniffers[id-1].iface2status='KO'
+      }else if(dato.iface2 <= sniffers[id-1].iface2){
         
+        sniffers[id-1].iface2status = 'NoK'
+      }
+      
+      if(dato.iface3 == 'KO'){
+        sniffers[id-1].iface3=0
+        sniffers[id-1].iface3status='KO'
+      }else if(dato.iface3 <= sniffers[id-1].iface3){
+        
+        sniffers[id-1].iface3status = 'NoK'
+      }
 
       if(dato.temp >= maxTemp)
         sniffers[id-1].tempstatus = "HOT"
