@@ -172,7 +172,8 @@ client.on('message', function (topic, message) {
 
       
       let rasp = JSON.parse(message)
-      console.log("Received: "+rasp)
+      console.log("Received: ")
+      console.log(rasp)
       saveMonitor(rasp);
       //botcrai.botSendMessage(`${rasp.id}--> T: ${rasp.temp}ºC`)
       monitor.insertOne(JSON.parse(message))
