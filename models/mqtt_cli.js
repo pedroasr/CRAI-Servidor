@@ -13,19 +13,29 @@ class Mqtt_cli{
 }
 
 let topics = ['CRAIUPCTPersonCount','CRAIUPCT_BLEdata','CRAIUPCT_WifiData','keepalive']
-const client = mqtt.connect('mqtt://localhost'); 
+//const client = mqtt.connect('mqtt://localhost'); 
 const door = database.getCollection('DoorSensors')
 const ble = database.getCollection('BLE')
 const wifi = database.getCollection('wifi')
 const monitor = database.getCollection('monitor')
 
-client.on('connect', function () {
-  client.subscribe(topics, function (err) {
-    if (!err) {
-      console.log("MQTT CLIENT CONNECTED")
-    }
-  })
-})
+/*MQTT */
+
+const options = {
+  clean: true, // retain session
+connectTimeout: 4000, // Timeout period
+// Authentication information
+clientId: 'Server',
+username: 'Server',
+password: 'Server',
+}
+
+const connectUrl = "ws://10.147.18.134:8083/mqtt";
+const client = mqtt.connect(connectUrl,options);
+
+client.on("connect", function () {
+  console.log("Connected to MQTT URL");
+});
 
 /*
 function pad(n, z){

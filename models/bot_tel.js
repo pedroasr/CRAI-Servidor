@@ -10,6 +10,10 @@ const bot = new TelegramBot(token, {polling: true});
 
 let sniffers= []
 
+for (let i = 0;i<6;i++){
+  sniffers[i]
+}
+
 // Matches "/echo [whatever]"
 bot.onText(/\/get (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
@@ -19,18 +23,18 @@ bot.onText(/\/get (.+)/, (msg, match) => {
   const chatId = msg.chat.id;
   const resp = match[1]; // the captured "whatever" -- hacer split con " "
 
-  let id = resp.split['R'][1]
+  let id = int(resp.split['R'][1])
   let toret = ''
 
   if(id != 6){
 
-    toret = `Devolviendo informacion sobre ${sniffers[d].id}:\n 
-        Temperatura: ${sniffers[id].temp} - ${sniffers[id].tempstatus}.\n
-        AntenaWifi 1: ${sniffers[id].iface1} - ${sniffers[id].iface1status}.\n
-        AntenaWifi 2: ${sniffers[id].iface2} - ${sniffers.iface2status}.\n
-        AntenaWifi 3: ${sniffers[id].iface3} - ${sniffers.iface3status}.\n
-        ESP32: ${sniffers[id].BLEface}.\n
-        Su ultimo keep alive fue a ${sniffers[id].timestamp}`
+    toret = `Devolviendo informacion sobre ${sniffers[id-1].id}:\n 
+        Temperatura: ${sniffers[id-1].temp} - ${sniffers[id-1].tempstatus}.\n
+        AntenaWifi 1: ${sniffers[id-1].iface1} - ${sniffers[id-1].iface1status}.\n
+        AntenaWifi 2: ${sniffers[id-1].iface2} - ${sniffers[id-1].iface2status}.\n
+        AntenaWifi 3: ${sniffers[id-1].iface3} - ${sniffers[id-1].iface3status}.\n
+        ESP32: ${sniffers[id-1].BLEface}.\n
+        Su ultimo keep alive fue a ${sniffers[id-1].timestamp}`
 
   }else{
 
