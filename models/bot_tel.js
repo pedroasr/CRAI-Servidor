@@ -20,7 +20,7 @@ bot.onText(/\/get (.+)/, (msg, match) => {
   const chatId = msg.chat.id;
   const resp = match[1]; // the captured "whatever" -- hacer split con " "
 
-  let id = parseInt(resp.split('R')[1]-1)
+  let id = parseInt(resp.split('R')[1])
   let toret = ''
 
   if(id != 5){
