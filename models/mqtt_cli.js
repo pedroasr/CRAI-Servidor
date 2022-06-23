@@ -41,26 +41,27 @@ client.on('connect', function () {
   })
 })
 
-/*
-function pad(n, z){
-  z = z || 2;
-return ('00' + n).slice(-z);
-}
-
-const getFechaCompleta = () => {
-  let d = new Date,
-  dformat =   [d.getFullYear(),
-              pad(d.getMonth()+1),
-              pad(d.getDate())].join('-')+' '+
-              [pad(d.getHours()),
-              pad(d.getMinutes()),
-              pad(d.getSeconds()),
-              pad(d.getMilliseconds(),3)].join(':');
-
-  return dformat;
-} */
 
 let sniffers = []
+
+let empty = {
+  updated:false,
+  iface1:0,
+  iface1status:'unknown',
+  iface2:0,
+  iface2status:'unknown',
+  iface3:0,
+  iface3status:'unknown',
+  temp:0,
+  tempstatus:'unknown',
+
+}
+
+for(let i = 0;i<6;i++){
+  sniffers[i] = empty
+}
+
+botcrai.updateInfo(empty)
 
 let okCount = 0
 const maxTemp = 55;
