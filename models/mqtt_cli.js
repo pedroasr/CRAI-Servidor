@@ -99,6 +99,8 @@ const saveMonitor = (dato) => {
     sniffers[id-1].iface2status = 'OK'
     sniffers[id-1].iface3status = 'OK'
     sniffers[id-1].tempstatus = 'OK'
+    sniffers[id-1].id = dato.id
+    sniffers[id-1].timestamp = dato.timestamp
     
     sniffers[id-1].updated = true
 
@@ -134,7 +136,7 @@ const saveMonitor = (dato) => {
         
       sniffers[id-1].updated = true
 
-      sniffers[id-1] = dato
+      //sniffers[id-1] = dato
 
       console.log("Updating bot info\n"+sniffers)
       botcrai.updateInfo(sniffers)
