@@ -62,7 +62,7 @@ for(let i = 0;i<6;i++){
   sniffers[i] = empty
 }
 
-botcrai.updateInfo(empty)
+botcrai.updateInfo(sniffers)
 
 let okCount = 0
 const maxTemp = 55;
@@ -88,7 +88,8 @@ setInterval(()=>{
 const saveMonitor = (dato) => {
 
   console.log("Saving")
-  let id = parseInt(dato.id.split['y'][1])
+  let id = parseInt((dato.id).split['y'][1])
+  console.log(id)
 
   if(dato.id != "Raspberry6"){
 
