@@ -54,6 +54,7 @@ let empty = {
   iface3status:'unknown',
   temp:0,
   tempstatus:'unknown',
+  BLEface:'unknown'
 
 }
 
