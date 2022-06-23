@@ -64,6 +64,8 @@ setInterval(()=>{
     }
     
   }
+
+  botcrai.botSendMessage(msg)
   okCount = 0;
 },60 * 1000 * 15) //Cada 15 minutos
 
@@ -73,7 +75,7 @@ const saveMonitor = (dato) => {
 
   if(dato.id != "Raspberry6"){
 
-    if(dato.iface1 > sniffers[id-1].iface1 && dato.iface2 > sniffers[id-1].iface2 && dato.iface3 > sniffers[id-1].iface3 && dato.BLEface == 'OK'){
+    if(dato.iface1 > sniffers[id-1].iface1 && dato.iface2 > sniffers[id-1].iface2 && dato.iface3 > sniffers[id-1].iface3 && dato.BLEface == 'OK' && dato.temp < maxTemp){
 
       if(!sniffers[id-1].updated)
         okCount++;
@@ -113,7 +115,7 @@ const saveMonitor = (dato) => {
 
       sniffers[id-1] = dato
 
-      
+      botcrai.updateInfo(sniffers)
 
     }
 
