@@ -86,7 +86,7 @@ setInterval(()=>{
 const saveMonitor = (dato) => {
 
   console.log("Saving")
-  let id = dato.id.split['y'][1]
+  let id = parseInt(dato.id.split['y'][1])
 
   if(dato.id != "Raspberry6"){
 
