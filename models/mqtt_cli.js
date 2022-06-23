@@ -81,22 +81,26 @@ setInterval(()=>{
 
 const saveMonitor = (dato) => {
 
+  console.log("Saving")
   let id = int(dato.id.split['y'][1])
 
   if(dato.id != "Raspberry6"){
+
+    console.log("Receive Message")
+
+    sniffers[id-1].iface1status = 'OK'
+    sniffers[id-1].iface2status = 'OK'
+    sniffers[id-1].iface3status = 'OK'
+    sniffers[id-1].tempstatus = 'OK'
+    
+    sniffers[id-1].updated = true
 
     if(dato.iface1 > sniffers[id-1].iface1 && dato.iface2 > sniffers[id-1].iface2 && dato.iface3 > sniffers[id-1].iface3 && dato.BLEface == 'OK' && dato.temp < maxTemp){
 
       if(!sniffers[id-1].updated)
         okCount++;
 
-      sniffers[id-1].iface1status = 'OK'
-      sniffers[id-1].iface2status = 'OK'
-      sniffers[id-1].iface3status = 'OK'
-      sniffers[id-1].tempstatus = 'OK'
       
-
-      sniffers[id-1].updated = true
 
     }else{  //Checking what went wrong
 
@@ -125,6 +129,7 @@ const saveMonitor = (dato) => {
 
       sniffers[id-1] = dato
 
+      console.log("Updating bot info\n"+sniffers)
       botcrai.updateInfo(sniffers)
 
     }
@@ -161,7 +166,9 @@ client.on('message', function (topic, message) {
     
     case 'keepalive':
 
+      
       let rasp = JSON.parse(message)
+      console.log("Received: "+rasp)
       saveMonitor(rasp);
       //botcrai.botSendMessage(`${rasp.id}--> T: ${rasp.temp}ºC`)
       monitor.insertOne(JSON.parse(message))
