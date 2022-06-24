@@ -97,8 +97,11 @@ const saveMonitor = (dato) => {
 
   
   ind = parseInt((dato.id).split('y')[1])
-  console.log(ind)
+
+  console.log("INDICE"+ind)
   console.log(sniffers[ind-1])
+  console.log("-------------")
+  console.log(sniffers[ind])
 
   if(dato.id != "Raspberry6"){
 
