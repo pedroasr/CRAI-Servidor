@@ -182,6 +182,7 @@ const saveMonitor = (dato) => {
 
     sniffers[ind].updated = true
 
+    
 
   }else{
     console.log("Falta programar terabee")

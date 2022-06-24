@@ -47,6 +47,11 @@ bot.onText(/\/get (.+)/, (msg, match) => {
 
 const updateInfo = (datos) => {
   sniffers = datos
+
+  console.log("--------------LIST OF DEVVICE-------------")
+  for(let i = 0;i<5;i++){
+    console.log(sniffers[i])
+  }
 }
 
 const botSendMessage = (msgToBot) => {
