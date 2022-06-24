@@ -10,7 +10,7 @@ const bot = new TelegramBot(token, {polling: true});
 
 let sniffers= []
 
-
+let id = 1;
 // Matches "/echo [whatever]"
 bot.onText(/\/get (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
@@ -20,7 +20,9 @@ bot.onText(/\/get (.+)/, (msg, match) => {
   const chatId = msg.chat.id;
   const resp = match[1]; // the captured "whatever" -- hacer split con " "
 
-  let id = parseInt(resp.split('R')[1])
+  id = parseInt(resp.split('R')[1])
+  console.log("BOT- "+id)
+  console.log(sniffers[id-1])
   let toret = ''
 
   if(id != 6){
