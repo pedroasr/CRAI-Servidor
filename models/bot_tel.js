@@ -23,7 +23,7 @@ bot.onText(/\/get (.+)/, (msg, match) => {
   let id = parseInt(resp.split('R')[1])
   let toret = ''
 
-  if(id != 5){
+  if(id != 6){
 
     toret = `Devolviendo informacion sobre ${sniffers[id-1].id}:\n 
         Temperatura: ${sniffers[id-1].temp} - ${sniffers[id-1].tempstatus}.\n

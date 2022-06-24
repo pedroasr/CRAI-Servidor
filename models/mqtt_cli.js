@@ -59,7 +59,7 @@ let empty = {
 
 }
 
-for(let i = 0;i<6;i++){
+for(let i = 0;i<5;i++){
   sniffers[i] = empty
 }
 
@@ -68,10 +68,11 @@ botcrai.updateInfo(sniffers)
 let okCount = 0
 const maxTemp = 55;
 
+//Bot report status every 15 minutes
 setInterval(()=>{
 
   let msg = `Dispositivos OK: ${okCount}.\n`;
-  for(let i = 0;i<6;i++){
+  for(let i = 0;i<5;i++){
 
     if(sniffers[i].updated){
       sniffers[i].updated = false;
@@ -114,7 +115,7 @@ const saveMonitor = (dato) => {
     
     sniffers[id-1].updated = true
 
-    if(dato.iface1 > sniffers[id-1].iface1 && dato.iface2 > sniffers[id-1].iface2 && dato.iface3 > sniffers[id-1].iface3 && dato.BLEface == 'OK' && dato.temp < maxTemp){
+    if((dato.iface1 > sniffers[id-1].iface1) && (dato.iface2 > sniffers[id-1].iface2) && (dato.iface3 > sniffers[id-1].iface3) && (dato.BLEface == 'OK') && (dato.temp < maxTemp)){
 
       sniffers[id-1].error = false;
       if(!sniffers[id-1].updated)
@@ -154,8 +155,6 @@ const saveMonitor = (dato) => {
 
       if(dato.temp >= maxTemp)
         sniffers[id-1].tempstatus = "HOT"
-        
-      sniffers[id-1].updated = true
 
       //sniffers[id-1] = dato
 
