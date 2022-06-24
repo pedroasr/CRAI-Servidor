@@ -91,92 +91,95 @@ setInterval(()=>{
   okCount = 0;
 },60 * 1000 * 15) //Cada 15 minutos
 
+let ind = 1;
+
 const saveMonitor = (dato) => {
 
   
-  let id = parseInt((dato.id).split('y')[1])
+  ind = parseInt((dato.id).split('y')[1])
   
 
   if(dato.id != "Raspberry6"){
 
 
     
-    sniffers[id-1].iface1status = 'OK'
-    sniffers[id-1].iface2status = 'OK'
-    sniffers[id-1].iface3status = 'OK'
-    sniffers[id-1].tempstatus = 'OK'
-    sniffers[id-1].BLEface = dato.BLEface
-    sniffers[id-1].id = dato.id
-    sniffers[id-1].temp = dato.temp
-    sniffers[id-1].timestamp = dato.timestamp
-    sniffers[id-1].error = false
+    sniffers[ind-1].iface1status = 'OK'
+    sniffers[ind-1].iface2status = 'OK'
+    sniffers[ind-1].iface3status = 'OK'
+    sniffers[ind-1].tempstatus = 'OK'
+    sniffers[ind-1].error = false
+    sniffers[ind-1].BLEface = dato.BLEface
+    sniffers[ind-1].id = dato.id
+    sniffers[ind-1].temp = dato.temp
+    sniffers[ind-1].timestamp = dato.timestamp
+    
 
     //Checking Wifi Interfaces
     
     if(dato.iface1 == 'KO'){
 
-      sniffers[id-1].iface1 = 0
-      sniffers[id-1].iface1status = 'KO'
-      sniffers[id-1].error = true
+      sniffers[ind-1].iface1 = 0
+      sniffers[ind-1].iface1status = 'KO'
+      sniffers[ind-1].error = true
 
-    }else if(sniffers[id-1].iface1 < dato.iface1){
+    }else if(sniffers[ind-1].iface1 < dato.iface1){
 
-      sniffers[id-1].iface1 = dato.iface1
+      sniffers[ind-1].iface1 = dato.iface1
 
     }else{
-      sniffers[id-1].iface1status = 'NoK'
-      sniffers[id-1].iface1 = dato.iface1
-      sniffers[id-1].error = true
+      sniffers[ind-1].iface1status = 'NoK'
+      sniffers[ind-1].iface1 = dato.iface1
+      sniffers[ind-1].error = true
     }
 
     if(dato.iface2 == 'KO'){
 
-      sniffers[id-1].iface2 = 0
-      sniffers[id-1].iface2status = 'KO'
-      sniffers[id-1].error = true
+      sniffers[ind-1].iface2 = 0
+      sniffers[ind-1].iface2status = 'KO'
+      sniffers[ind-1].error = true
 
-    }else if(sniffers[id-1].iface2 < dato.iface2){
+    }else if(sniffers[ind-1].iface2 < dato.iface2){
 
-      sniffers[id-1].iface2 = dato.iface2
+      sniffers[ind-1].iface2 = dato.iface2
 
     }else{
-      sniffers[id-1].iface2status = 'NoK'
-      sniffers[id-1].iface2 = dato.iface2
-      sniffers[id-1].error = true
+      sniffers[ind-1].iface2status = 'NoK'
+      sniffers[ind-1].iface2 = dato.iface2
+      sniffers[ind-1].error = true
     }
 
     if(dato.iface3 == 'KO'){
 
-      sniffers[id-1].iface3 = 0
-      sniffers[id-1].iface3status = 'KO'
-      sniffers[id-1].error = true
+      sniffers[ind-1].iface3 = 0
+      sniffers[ind-1].iface3status = 'KO'
+      sniffers[ind-1].error = true
 
-    }else if(sniffers[id-1].iface3 < dato.iface3){
+    }else if(sniffers[ind-1].iface3 < dato.iface3){
 
-      sniffers[id-1].iface3 = dato.iface3
+      sniffers[ind-1].iface3 = dato.iface3
 
     }else{
-      sniffers[id-1].iface3status = 'NoK'
-      sniffers[id-1].iface3 = dato.iface3
-      sniffers[id-1].error = true
+      sniffers[ind-1].iface3status = 'NoK'
+      sniffers[ind-1].iface3 = dato.iface3
+      sniffers[ind-1].error = true
     }
 
-    if(sniffers[id-1].BLEface == 'KO')
-      sniffers[id-1].error = true
+    if(sniffers[ind-1].BLEface == 'KO')
+      sniffers[ind-1].error = true
     
-    if(sniffers[id-1].temp > maxTemp){
-      sniffers[id-1].tempstatus = "HOT"
-      sniffers[id-1].error = true
+    if(sniffers[ind-1].temp > maxTemp){
+      sniffers[ind-1].tempstatus = "HOT"
+      sniffers[ind-1].error = true
     }
     
 
-    if(!sniffers[id-1].error)
+    if(!sniffers[ind-1].error)
       okCount++;
 
     console.log("Updating bots sniffers info\n")
     botcrai.updateInfo(sniffers)
 
-    sniffers[id-1].updated = true
+    sniffers[ind-1].updated = true
 
   }else{
     console.log("Falta programar terabee")
