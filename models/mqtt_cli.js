@@ -42,7 +42,7 @@ client.on('connect', function () {
 })
 
 
-let sniffers = []
+let sniffers = new Array(5)
 
 let empty = {
   updated:false,
@@ -182,7 +182,7 @@ const saveMonitor = (dato) => {
 
     sniffers[ind].updated = true
 
-    
+
 
   }else{
     console.log("Falta programar terabee")
