@@ -26,12 +26,12 @@ bot.onText(/\/get (.+)/, (msg, match) => {
   if(id != 6){
 
     toret = `Devolviendo informacion sobre ${sniffers[id-1].id}:\n 
-        Temperatura: ${sniffers[id-1].temp} - ${sniffers[id-1].tempstatus}.\n
-        AntenaWifi 1: ${sniffers[id-1].iface1} - ${sniffers[id-1].iface1status}.\n
-        AntenaWifi 2: ${sniffers[id-1].iface2} - ${sniffers[id-1].iface2status}.\n
-        AntenaWifi 3: ${sniffers[id-1].iface3} - ${sniffers[id-1].iface3status}.\n
+        Temperatura: ${sniffers[id-1].temp} - ${sniffers[id-1].tempstatus}.
+        AntenaWifi 1: ${sniffers[id-1].iface1} - ${sniffers[id-1].iface1status}.
+        AntenaWifi 2: ${sniffers[id-1].iface2} - ${sniffers[id-1].iface2status}.
+        AntenaWifi 3: ${sniffers[id-1].iface3} - ${sniffers[id-1].iface3status}.
         ESP32: ${sniffers[id-1].BLEface}.\n
-        Su ultimo keep alive fue a ${sniffers[id-1].timestamp}`
+      Su ultimo keep alive fue a ${sniffers[id-1].timestamp}`
 
   }else{
 

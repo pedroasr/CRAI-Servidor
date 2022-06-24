@@ -99,7 +99,6 @@ const saveMonitor = (dato) => {
 
   if(dato.id != "Raspberry6"){
 
-    console.log("Receive Message")
 
     sniffers[id-1].iface1status = 'OK'
     sniffers[id-1].iface2status = 'OK'
@@ -113,7 +112,7 @@ const saveMonitor = (dato) => {
     sniffers[id-1].iface2 = dato.iface2
     sniffers[id-1].iface3 = dato.iface3*/
     
-    sniffers[id-1].updated = true
+    
 
     if((dato.iface1 > sniffers[id-1].iface1) && (dato.iface2 > sniffers[id-1].iface2) && (dato.iface3 > sniffers[id-1].iface3) && (dato.BLEface == 'OK') && (dato.temp < maxTemp)){
 
@@ -130,38 +129,56 @@ const saveMonitor = (dato) => {
       sniffers[id-1].error = true;
 
       if(dato.iface1 == 'KO'){
+
         sniffers[id-1].iface1=0
         sniffers[id-1].iface1status='KO'
+
       }else if(dato.iface1 <= sniffers[id-1].iface1){
         
+        sniffers[id-1].iface1 = dato.iface1
         sniffers[id-1].iface1status = 'NoK'
-      }
+
+      }else
+        sniffers[id-1].iface1 = dato.iface1
+      
         
       if(dato.iface2 == 'KO'){
+
         sniffers[id-1].iface2=0
         sniffers[id-1].iface2status='KO'
+
       }else if(dato.iface2 <= sniffers[id-1].iface2){
         
+        sniffers[id-1].iface2 = dato.iface2
         sniffers[id-1].iface2status = 'NoK'
-      }
+
+      }else
+        sniffers[id-1].iface2 = dato.iface2
       
       if(dato.iface3 == 'KO'){
+
         sniffers[id-1].iface3=0
         sniffers[id-1].iface3status='KO'
+
       }else if(dato.iface3 <= sniffers[id-1].iface3){
-        
+
+        sniffers[id-1].iface3 = dato.iface3
         sniffers[id-1].iface3status = 'NoK'
-      }
+
+      }else
+        sniffers[id-1].iface3 = dato.iface3
 
       if(dato.temp >= maxTemp)
         sniffers[id-1].tempstatus = "HOT"
 
       //sniffers[id-1] = dato
 
-      console.log("Updating bot info\n"+sniffers)
-      botcrai.updateInfo(sniffers)
-
     }
+
+    console.log("Updating bots sniffers info\n")
+    botcrai.updateInfo(sniffers)
+
+    sniffers[id-1].updated = true
 
   }else{
     console.log("Falta")
