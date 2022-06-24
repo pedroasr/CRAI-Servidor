@@ -98,10 +98,6 @@ const saveMonitor = (dato) => {
   
   ind = parseInt((dato.id).split('y')[1])-1
 
-  console.log("INDICE: "+ind)
-  console.log("Updating: ")
-  console.log(sniffers[ind])
-  console.log("-------------")
   
 
   if(dato.id != "Raspberry6"){
@@ -186,8 +182,6 @@ const saveMonitor = (dato) => {
 
     sniffers[ind].updated = true
 
-    console.log(sniffers[ind])
-    console.log("-------------")
 
   }else{
     console.log("Falta programar terabee")

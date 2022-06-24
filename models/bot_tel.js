@@ -20,20 +20,20 @@ bot.onText(/\/get (.+)/, (msg, match) => {
   const chatId = msg.chat.id;
   const resp = match[1]; // the captured "whatever" -- hacer split con " "
 
-  id = parseInt(resp.split('R')[1])
+  id = parseInt(resp.split('R')[1])-1
   console.log("BOT- "+id)
-  console.log(sniffers[id-1])
+  console.log(sniffers[id])
   let toret = ''
 
   if(id != 6){
 
-    toret = `Devolviendo informacion sobre ${sniffers[id-1].id}:\n 
-        Temperatura: ${sniffers[id-1].temp} - ${sniffers[id-1].tempstatus}.
-        AntenaWifi 1: ${sniffers[id-1].iface1} - ${sniffers[id-1].iface1status}.
-        AntenaWifi 2: ${sniffers[id-1].iface2} - ${sniffers[id-1].iface2status}.
-        AntenaWifi 3: ${sniffers[id-1].iface3} - ${sniffers[id-1].iface3status}.
-        ESP32: ${sniffers[id-1].BLEface}.\n
-      Su ultimo keep alive fue a ${sniffers[id-1].timestamp}`
+    toret = `Devolviendo informacion sobre ${sniffers[id].id}:\n 
+        Temperatura: ${sniffers[id].temp} - ${sniffers[id].tempstatus}.
+        AntenaWifi 1: ${sniffers[id].iface1} - ${sniffers[id].iface1status}.
+        AntenaWifi 2: ${sniffers[id].iface2} - ${sniffers[id].iface2status}.
+        AntenaWifi 3: ${sniffers[id].iface3} - ${sniffers[id].iface3status}.
+        ESP32: ${sniffers[id].BLEface}.\n
+      Su ultimo keep alive fue a ${sniffers[id].timestamp}`
 
   }else{
 
