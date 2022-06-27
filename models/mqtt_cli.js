@@ -42,7 +42,7 @@ client.on('connect', function () {
 })
 
 
-let sniffers = new Array(5)
+let sniffers = []
 
 let empty = {
   updated:false,
