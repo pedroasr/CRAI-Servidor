@@ -1,12 +1,20 @@
 const fs = require('fs');
 
-var mongodb = require("mongodb");
+var database = require("./models/database");
+
 var CronJob = require('cron').CronJob;
 
-var client = mongodb.MongoClient;
-var url = "mongodb://10.147.18.134:27017/";
+/*var client = mongodb.MongoClient;
+var url = "mongodb://10.147.18.134:27017/";*/
+
+const puertadatos = database.getCollection('DoorSensors')
+const bledatos = database.getCollection('BLE')
+const wifidatos = database.getCollection('wifi')
 
 let cabecera = 'Fecha;Hora;Evento In-Out(1/0);Cont. D-In total;Cont. I-In total;Total IN;Cont. D-out total;Cont. I-Out total;Total OUT;Estimación nº Personas\r\n'
+
+let cabecerawifi = 'Fecha;Hora;Id;Canal;SSID;MAC Origen;RSSI\r\n'
+
 
 /* Timestamp*/
 function pad(n, z){
@@ -25,39 +33,62 @@ function pad(n, z){
 
 let content = {}
 
-const main = () => {
-    fs.writeFile(`csv/PersonCount_${getFecha()}_7-22.csv`, cabecera, { flag: 'w' }, err => {});
+const door = () => {
 
-    client.connect(url, function (err, client) {
+    fs.writeFile(`csv/PersonCount_${getFecha()}_7-22.csv`, cabecera, { flag: 'w' }, err => {});    
 
-        var db = client.db("CRAI-UPCT");
-        var collection = db.collection("DoorSensors");
-
-        var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};
-
-        var cursor = collection.find(query);
-        cursor.sort({timestamp:1})
-
-
-        //console.log(cursor)
-        cursor.forEach(
-            function(doc) {
-                if(doc.timestamp !== undefined){
-
-                    content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.eventoIO ? 1 : 0};${doc.entradasSensorDer};${doc.entradasSensorIzq};${doc.entradasTotal};${doc.salidasSensorDer};${doc.salidasSensorIzq};${doc.salidasTotal};${doc.estPersonas}\r\n`
-                    fs.writeFile(`csv/PersonCount_${getFecha()}_7-22.csv`, content, { flag: 'a' }, err => {});
-                
-                }
-                    
-                
+    /*var db = client.db("CRAI-UPCT");
+    var collection = db.collection("DoorSensors");*/
+    var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};
+    var cursor = puertadatos.find(query).sort({timestamp:1});
+    
+    
+    //console.log(cursor)
+    cursor.forEach(
+        function(doc) {
             
-            }, 
-            function(err) {
-                client.close();
-            }
-        );        
+            if(doc.timestamp !== undefined){
+                content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.eventoIO ? 1 : 0};${doc.entradasSensorDer};${doc.entradasSensorIzq};${doc.entradasTotal};${doc.salidasSensorDer};${doc.salidasSensorIzq};${doc.salidasTotal};${doc.estPersonas}\r\n`
+                fs.writeFile(`csv/PersonCount_${getFecha()}_7-22.csv`, content, { flag: 'a' }, err => {});
+            
+            } 
         
-    })
+        }
+    );        
+        
+    
+}
+
+const wifi = () => {
+
+    fs.writeFile(`csv/wifi_${getFecha()}_7-22.csv`, cabecerawifi, { flag: 'w' }, err => {});
+
+    /*var db = client.db("CRAI-UPCT");
+    var collection = db.collection("wifi");*/
+    var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};
+    var cursor = wifidatos.find(query);
+    cursor.sort({timestamp:1})
+
+    cursor.forEach(
+        function(doc) {
+            if(doc.timestamp !== undefined){
+                content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.id};${doc.canal};${doc.ssid};${doc.OrigMAC};${doc.rssi}\r\n`
+                fs.writeFile(`csv/wifi_${getFecha()}_7-22.csv`, content, { flag: 'a' }, err => {});
+            
+            }
+        
+        }, 
+        function(err) {
+            //client.close();
+        }
+    );        
+        
+   
+}
+
+const main = () => {
+    door();
+    wifi();
 }
 
 var job = new CronJob(
@@ -67,5 +98,5 @@ var job = new CronJob(
 console.log("Starting CRON job");
 job.start()
 
-
 main();
+

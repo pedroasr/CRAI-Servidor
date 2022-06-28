@@ -1,7 +1,7 @@
 const fs = require('fs');
 //const https = require('https');
 const express = require('express');
-
+var CronJob = require('cron').CronJob;
 require('dotenv').config();
 
 
@@ -11,14 +11,24 @@ function pad(n, z){
   return ('00' + n).slice(-z);
   }
   
-  const getFecha = () => {
-    let d = new Date,
-    dformat =   [d.getFullYear(),
-                pad(d.getMonth()+1),
-                pad(d.getDate())].join('-');
-  
-    return dformat;
+const getFecha = () => {
+  let d = new Date,
+  dformat =   [d.getFullYear(),
+              pad(d.getMonth()+1),
+              pad(d.getDate())].join('-');
+
+  return dformat;
 } 
+
+var fileRt = getFecha();
+
+var job = new CronJob(
+    '00 00 22 * * *',
+    () => {
+        fileRt = getFecha()
+    });
+console.log("Starting CRON job");
+job.start()
 
 //Aqui esta definido el funcionamiento del servidor
 class Rest {
@@ -43,16 +53,31 @@ class Rest {
     }
 
     routes() {
+
         //Estas son las peticiones que responde
-        this.app.get('/upct_hd/ble', (req, res) => {
+
+        //Get People count csvs
+        this.app.get('/upct_hd/pcount', (req, res) => {
             
             res.download(`csv/PersonCount_${getFecha()}_7-22.csv`)
         });
 
-        this.app.get('/upct_hd/ble/:fecha', (req, res) => {
+        this.app.get('/upct_hd/pcount/:fecha', (req, res) => {
             
             res.download(`csv/PersonCount_${req.params.fecha}_7-22.csv`)
         });
+
+        //Get wifi csvs
+        this.app.get('/upct_hd/wifi', (req, res) => {
+            
+            res.download(`csv/wifi_${getFecha()}_7-22.csv`)
+        });
+
+        this.app.get('/upct_hd/wifi/:fecha', (req, res) => {
+            
+            res.download(`csv/wifi_${req.params.fecha}_7-22.csv`)
+        });
+
 
         
             
@@ -65,5 +90,7 @@ class Rest {
         });
     }
 }
+
+
 
 module.exports = Rest;
