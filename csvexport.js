@@ -44,9 +44,7 @@ const door = () => {
     fs.writeFile(`csv/PersonCount_${getFecha()}_7-22.csv`, cabecera, { flag: 'w' }, err => {});    
 
     /*var db = client.db("CRAI-UPCT");
-    var collection = db.collection("DoorSensors");*/
-    console.log("HOLA")
-    //var query = {"date": {"$gte": new Date(`${isodate()}Z05:00:00.000T`), "$lt": new Date(`${isodate()}Z20:00:00.000T`)}};//, "$lt": `${getFecha()} 22:00:00`
+    var collection = db.collection("DoorSensors");*/    //var query = {"date": {"$gte": new Date(`${isodate()}Z05:00:00.000T`), "$lt": new Date(`${isodate()}Z20:00:00.000T`)}};//, "$lt": `${getFecha()} 22:00:00`
     var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};//, "$lt": `${getFecha()} 22:00:00`
     var cursor = puertadatos.find(query).sort({timestamp:1});
     
@@ -91,42 +89,61 @@ const wifi = () => {
    
 }
 
+const getHora = (l=0) => {
+    let d = new Date();
+    return pad(d.getHours()+l)
+}
+
 const ble = () => {
 
-    fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, cabecerawifi, { flag: 'w' }, err => {});
+    if(getHora()=='07')
+        fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, cabecerable, { flag: 'w' }, err => {});
 
-    /*var db = client.db("CRAI-UPCT");
-    var collection = db.collection("wifi");*/
-    var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};
-    var cursor = bledatos.find(query).sort({timestamp:1});
-
+    var query = {"timestamp": {"$gte": `${getFecha()} ${getHora()}:00:00`, "$lt": `${getFecha()} ${getHora(1)}:00:00`}};
+    var cursor = bledatos.find(query)//.sort({timestamp:1});
+    
+    console.log(`Writing from ${pad(i)} to ${pad(i+1)}`)
 
     cursor.forEach(
         function(doc) {
             if(doc.timestamp !== undefined){
-                content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.id};${doc.mac};${doc.tipoMAC};${doc.bleSize};${doc.rspSize};${doc.tipoADV};${doc.bleData};${doc.rssi}\r\n`
+                
+                content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.idRasp};${doc.mac};${doc.tipoMAC};${doc.bleSize};${doc.rspSize};${doc.tipoADV};${doc.bleData};${doc.rssi}\r\n`
                 fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, content, { flag: 'a' }, err => {});
-            
+                
             }
-        
         }
-    );        
-        
+    );   
+
+    
+       
    
 }
+
 
 const main = () => {
     door();
     wifi();
-    ble();
+
 }
 
 var job = new CronJob(
     '00 00 22 * * *',
     main()
 );
+
 console.log("Starting CRON job");
 job.start()
+
+//7-22 cada hora pero en esa franja
+var blejob = new CronJob(
+    '00 00 7-22 * * *',
+    ble()
+);
+
+console.log("Starting BLE job");
+blejob.start()
+
 
 //main(); DO NOT UNCOMMENT!!!
 
