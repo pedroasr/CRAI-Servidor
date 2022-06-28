@@ -23,7 +23,7 @@ const getFecha = () => {
 var fileRt = getFecha();
 
 var job = new CronJob(
-    '00 00 22 * * *',
+    '10 00 22 * * *',
     () => {
         fileRt = getFecha()
     });
@@ -59,7 +59,7 @@ class Rest {
         //Get People count csvs
         this.app.get('/upct_hd/pcount', (req, res) => {
             
-            res.download(`csv/PersonCount_${getFecha()}_7-22.csv`)
+            res.download(`csv/PersonCount_${fileRt}_7-22.csv`)
         });
 
         this.app.get('/upct_hd/pcount/:fecha', (req, res) => {
@@ -70,12 +70,23 @@ class Rest {
         //Get wifi csvs
         this.app.get('/upct_hd/wifi', (req, res) => {
             
-            res.download(`csv/wifi_${getFecha()}_7-22.csv`)
+            res.download(`csv/wifi_${fileRt}_7-22.csv`)
         });
 
         this.app.get('/upct_hd/wifi/:fecha', (req, res) => {
             
             res.download(`csv/wifi_${req.params.fecha}_7-22.csv`)
+        });
+
+        //Get wifi csvs
+        this.app.get('/upct_hd/ble', (req, res) => {
+            
+            res.download(`csv/ble_${fileRt}_7-22.csv`)
+        });
+
+        this.app.get('/upct_hd/ble/:fecha', (req, res) => {
+            
+            res.download(`csv/ble_${req.params.fecha}_7-22.csv`)
         });
 
 

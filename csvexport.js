@@ -15,6 +15,8 @@ let cabecera = 'Fecha;Hora;Evento In-Out(1/0);Cont. D-In total;Cont. I-In total;
 
 let cabecerawifi = 'Fecha;Hora;Id;Canal;SSID;MAC Origen;RSSI\r\n'
 
+let cabecerable = 'Fecha;Hora;Id;MAC;Tipo MAC;ADV Size;RSP Size;Tipo ADV;Advertisement;RSSI\r\n'
+
 
 /* Timestamp*/
 function pad(n, z){
@@ -83,9 +85,30 @@ const wifi = () => {
             
             }
         
-        }, 
-        function(err) {
-            //client.close();
+        }
+    );        
+        
+   
+}
+
+const ble = () => {
+
+    fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, cabecerawifi, { flag: 'w' }, err => {});
+
+    /*var db = client.db("CRAI-UPCT");
+    var collection = db.collection("wifi");*/
+    var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};
+    var cursor = bledatos.find(query).sort({timestamp:1});
+
+
+    cursor.forEach(
+        function(doc) {
+            if(doc.timestamp !== undefined){
+                content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.id};${doc.mac};${doc.tipoMAC};${doc.bleSize};${doc.rspSize};${doc.tipoADV};${doc.bleData};${doc.rssi}\r\n`
+                fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, content, { flag: 'a' }, err => {});
+            
+            }
+        
         }
     );        
         
@@ -95,6 +118,7 @@ const wifi = () => {
 const main = () => {
     door();
     wifi();
+    ble();
 }
 
 var job = new CronJob(
