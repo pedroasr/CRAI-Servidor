@@ -31,6 +31,10 @@ function pad(n, z){
     return dformat;
 } 
 
+const isodate =() =>{
+    return new Date().toISOString().split('T')[0];
+}
+
 let content = {}
 
 const door = () => {
@@ -39,7 +43,9 @@ const door = () => {
 
     /*var db = client.db("CRAI-UPCT");
     var collection = db.collection("DoorSensors");*/
-    var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};
+    console.log("HOLA")
+    //var query = {"date": {"$gte": new Date(`${isodate()}Z05:00:00.000T`), "$lt": new Date(`${isodate()}Z20:00:00.000T`)}};//, "$lt": `${getFecha()} 22:00:00`
+    var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};//, "$lt": `${getFecha()} 22:00:00`
     var cursor = puertadatos.find(query).sort({timestamp:1});
     
     
@@ -66,8 +72,8 @@ const wifi = () => {
     /*var db = client.db("CRAI-UPCT");
     var collection = db.collection("wifi");*/
     var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};
-    var cursor = wifidatos.find(query);
-    cursor.sort({timestamp:1})
+    var cursor = wifidatos.find(query).sort({timestamp:1});
+
 
     cursor.forEach(
         function(doc) {
@@ -98,5 +104,5 @@ var job = new CronJob(
 console.log("Starting CRON job");
 job.start()
 
-main();
+//main(); DO NOT UNCOMMENT!!!
 
