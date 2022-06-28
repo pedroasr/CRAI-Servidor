@@ -94,10 +94,15 @@ const getHora = (l=0) => {
     return pad(d.getHours()+l)
 }
 
+let started = false
+
 const ble = () => {
 
-    if(getHora()=='07')
+    if(getHora()=='07' || !started){
+
         fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, cabecerable, { flag: 'w' }, err => {});
+        started = true
+    }
 
     var query = {"timestamp": {"$gte": `${getFecha()} ${getHora()}:00:00`, "$lt": `${getFecha()} ${getHora(1)}:00:00`}};
     var cursor = bledatos.find(query).sort({timestamp:1});
