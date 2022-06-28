@@ -100,7 +100,7 @@ const ble = () => {
         fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, cabecerable, { flag: 'w' }, err => {});
 
     var query = {"timestamp": {"$gte": `${getFecha()} ${getHora()}:00:00`, "$lt": `${getFecha()} ${getHora(1)}:00:00`}};
-    var cursor = bledatos.find(query)//.sort({timestamp:1});
+    var cursor = bledatos.find(query).sort({timestamp:1});
     
     console.log(`Writing from ${getHora()} to ${getHora(1)}`)
 
