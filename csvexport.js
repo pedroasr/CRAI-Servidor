@@ -118,13 +118,21 @@ const ble = () => {
                 
             }
         }
-    );   
-
-    
-       
+    );       
    
 }
 
+const deleteDatabase = () => {
+    if(getHora()=='23'){    //Por si acaso
+        bledatos.drop((err,delOk)=>{
+            if (err) {
+                console.log("BBDD Removal not possible")
+                throw err;
+            }
+            if (delOK) console.log("Collection deleted");
+        })
+    }
+}
 
 const main = () => {
     door();
@@ -149,15 +157,11 @@ var blejob = new CronJob(
 console.log("Starting BLE job");
 blejob.start();
 
+
+
 var blereset = new CronJob(
     '00 00 23 * * *',
-    bledatos.drop((err,delOk)=>{
-        if (err) {
-            console.log("BBDD Removal not possible")
-            throw err;
-        }
-        if (delOK) console.log("Collection deleted");
-    })
+    deleteDatabase
 );
 
 console.log("BLE removal schedule started")
