@@ -104,10 +104,10 @@ const ble = () => {
         started = true
     }
 
-    var query = {"timestamp": {"$gte": `${getFecha()} ${getHora()}:00:00`, "$lt": `${getFecha()} ${getHora(1)}:00:00`}};
+    var query = {"timestamp": {"$gte": `${getFecha()} ${getHora(-1)}:00:00`, "$lt": `${getFecha()} ${getHora()}:00:00`}};
     var cursor = bledatos.find(query).sort({timestamp:1});
     
-    console.log(`Writing from ${getHora()} to ${getHora(1)}`)
+    console.log(`Writing from ${getHora(-1)} to ${getHora()}`)
 
     cursor.forEach(
         function(doc) {
