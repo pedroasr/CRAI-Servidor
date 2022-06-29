@@ -149,6 +149,17 @@ var blejob = new CronJob(
 console.log("Starting BLE job");
 blejob.start()
 
+var blereset = new CronJob(
+    '00 00 23 * * *',
+    bledatos.drop((err,delOk)=>{
+        if (err) {
+            console.log("BBDD Removal not possible")
+            throw err;
+        }
+        if (delOK) console.log("Collection deleted");
+    })
+);
+
 
 //main(); DO NOT UNCOMMENT!!!
 
