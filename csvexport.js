@@ -113,7 +113,7 @@ const ble = () => {
         function(doc) {
             if(doc.timestamp !== undefined){
                 
-                content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.idRasp};${doc.mac};${doc.tipoMAC};${doc.bleSize};${doc.rspSize};${doc.tipoADV};${doc.bleData};${doc.rssi}\r\n`
+                content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.idRasp};${doc.mac};${doc.tipoMac};${doc.bleSize};${doc.rspSize};${doc.tipoADV};${doc.bleData};${doc.rssi}\r\n`
                 fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, content, { flag: 'a' }, err => {});
                 
             }
@@ -142,7 +142,7 @@ const main = () => {
 
 var job = new CronJob(
     '00 00 22 * * *',
-    main()
+    main
 );
 
 console.log("Starting CRON job");
@@ -150,8 +150,8 @@ job.start()
 
 //7-22 cada hora pero en esa franja
 var blejob = new CronJob(
-    '00 00 7-22 * * *',
-    ble()
+    '00 00 07-22 * * *',
+    ble
 );
 
 console.log("Starting BLE job");
@@ -167,6 +167,7 @@ var blereset = new CronJob(
 console.log("BLE removal schedule started")
 blereset.start();
 
-
-//main(); DO NOT UNCOMMENT!!!
+//If restarted app get some csv
+main()
+ble()
 
