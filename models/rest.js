@@ -95,17 +95,15 @@ class Rest {
 
     }
 
-    listen(){
-        https.createServer({
-            key:fs.readFileSync('./certs/pkey.pem'),
-            cert: fs.readFileSync('./certs/servercrt.crt')
-        }, this.app).listen( this.port, () => {
-            console.log('HTTPS Server running on port', this.port);
-        });
-    }
-
 }
 
+https.createServer({
+    key: fs.readFileSync('./certs/pkey.pem'),
+    cert: fs.readFileSync('./certs/servercrt.crt')
+}, this.app).listen( this.port, () => {
+    console.log('HTTPS Server running on port', this.port);
+});
 
 
-module.exports = Rest;
+
+module.exports = Rest;  
