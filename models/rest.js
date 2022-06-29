@@ -1,5 +1,5 @@
 const fs = require('fs');
-//const https = require('https');
+const https = require('https');
 const express = require('express');
 var CronJob = require('cron').CronJob;
 require('dotenv').config();
@@ -96,10 +96,14 @@ class Rest {
     }
 
     listen(){
-        this.app.listen( this.port, () => {
-            console.log('Servidor corriendo en puerto', this.port);
+        https.createServer({
+            key:fs.readFileSync('./certs/pkey.pem'),
+            cert: fs.readFileSync('./certs/servercrt.crt')
+        }, this.app).listen( this.port, () => {
+            console.log('HTTPS Server running on port', this.port);
         });
     }
+
 }
 
 
