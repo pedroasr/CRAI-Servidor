@@ -147,7 +147,7 @@ var blejob = new CronJob(
 );
 
 console.log("Starting BLE job");
-blejob.start()
+blejob.start();
 
 var blereset = new CronJob(
     '00 00 23 * * *',
@@ -159,6 +159,9 @@ var blereset = new CronJob(
         if (delOK) console.log("Collection deleted");
     })
 );
+
+console.log("BLE removal schedule started")
+blereset.start();
 
 
 //main(); DO NOT UNCOMMENT!!!
