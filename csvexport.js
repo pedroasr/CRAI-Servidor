@@ -69,14 +69,14 @@ const wifi = () => {
 
     fs.writeFile(`csv/wifi_${getFecha()}_7-22.csv`, cabecerawifi, { flag: 'w' }, err => {});
 
-    /*var db = client.db("CRAI-UPCT");
-    var collection = db.collection("wifi");*/
     var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};
     //var query = {"timestamp": {"$gte": `2022-06-29 07:00:00`, "$lt": `2022-06-29 22:00:00`}};
     
     var cursor = wifidatos.find(query);
     
     cursor.sort({timestamp:1}).allowDiskUse();
+
+    console.log(`Saving Wifi data of the day`)
 
 
     cursor.forEach(
@@ -88,32 +88,25 @@ const wifi = () => {
             }
         
         }
-    );        
+    );   
+    
+    console.log("Wifi data saved");
         
    
 }
 
-const getHora = (l=0) => {
-    let d = new Date();
-    return pad(d.getHours()+l)
-}
-
-let started = false
 
 const ble = () => {
-
-    if(getHora()=='07' || !started){
-
-        fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, cabecerable, { flag: 'w' }, err => {});
-        started = true
-    }
-
     
+    fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, cabecerable, { flag: 'w' }, err => {});
 
-    var query = {"timestamp": {"$gte": `${getFecha()} ${getHora(-1)}:00:00`, "$lt": `${getFecha()} ${getHora()}:00:00`}};
-    var cursor = bledatos.find(query).sort({timestamp:1});
+
+    var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};
+    var cursor = bledatos.find(query);
     
-    console.log(`Writing from ${getHora(-1)} to ${getHora()}`)
+    cursor.sort({timestamp:1}).allowDiskUse();
+    
+    console.log(`Saving BLE data of the day`)
 
     cursor.forEach(
         function(doc) {
@@ -122,12 +115,12 @@ const ble = () => {
                 content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.idRasp};${doc.mac};${doc.tipoMac};${doc.bleSize};${doc.rspSize};${doc.tipoADV};${doc.bleData};${doc.rssi}\r\n`
                 fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, content, { flag: 'a' }, err => {});
                 
-                
             }
         }
     );   
      
-   
+    console.log("BLE data saved");
+
 }
 
 const main = () => {
