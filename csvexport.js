@@ -46,7 +46,7 @@ const door = () => {
     /*var db = client.db("CRAI-UPCT");
     var collection = db.collection("DoorSensors");*/    //var query = {"date": {"$gte": new Date(`${isodate()}Z05:00:00.000T`), "$lt": new Date(`${isodate()}Z20:00:00.000T`)}};//, "$lt": `${getFecha()} 22:00:00`
     var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};//, "$lt": `${getFecha()} 22:00:00`
-    var cursor = puertadatos.find(query).sort({timestamp:1});
+    var cursor = puertadatos.find(query).sort({"timestamp":1});
     
     
     //console.log(cursor)
@@ -72,7 +72,11 @@ const wifi = () => {
     /*var db = client.db("CRAI-UPCT");
     var collection = db.collection("wifi");*/
     var query = {"timestamp": {"$gte": `${getFecha()} 07:00:00`, "$lt": `${getFecha()} 22:00:00`}};
-    var cursor = wifidatos.find(query).sort({timestamp:1});
+    //var query = {"timestamp": {"$gte": `2022-06-29 07:00:00`, "$lt": `2022-06-29 22:00:00`}};
+    
+    var cursor = wifidatos.find(query);
+    
+    cursor.sort({timestamp:1}).allowDiskUse();
 
 
     cursor.forEach(
@@ -104,6 +108,8 @@ const ble = () => {
         started = true
     }
 
+    
+
     var query = {"timestamp": {"$gte": `${getFecha()} ${getHora(-1)}:00:00`, "$lt": `${getFecha()} ${getHora()}:00:00`}};
     var cursor = bledatos.find(query).sort({timestamp:1});
     
@@ -116,27 +122,18 @@ const ble = () => {
                 content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.idRasp};${doc.mac};${doc.tipoMac};${doc.bleSize};${doc.rspSize};${doc.tipoADV};${doc.bleData};${doc.rssi}\r\n`
                 fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, content, { flag: 'a' }, err => {});
                 
+                
             }
         }
-    );       
+    );   
+     
    
-}
-
-const deleteDatabase = () => {
-    if(getHora()=='23'){    //Por si acaso
-        bledatos.drop((err,delOk)=>{
-            if (err) {
-                console.log("BBDD Removal not possible")
-                throw err;
-            }
-            if (delOK) console.log("Collection deleted");
-        })
-    }
 }
 
 const main = () => {
     door();
     wifi();
+    ble();
 
 }
 
@@ -148,6 +145,7 @@ var job = new CronJob(
 console.log("Starting CRON job");
 job.start()
 
+/*
 //7-22 cada hora pero en esa franja
 var blejob = new CronJob(
     '00 00 07-22 * * *',
@@ -156,18 +154,9 @@ var blejob = new CronJob(
 
 console.log("Starting BLE job");
 blejob.start();
+*/
 
-
-
-var blereset = new CronJob(
-    '00 00 23 * * *',
-    deleteDatabase
-);
-
-console.log("BLE removal schedule started")
-blereset.start();
 
 //If restarted app get some csv
 main()
-ble()
 
