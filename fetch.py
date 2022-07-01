@@ -318,10 +318,17 @@ def crearcsv():
     #df = pd.read_csv('06122021.csv')
     #print(df)
     print(1)
-while True:
-    try:
-        crearcsv()
-        print('recolectando datos del servidor: Espere 3 min ')
-        time.sleep(180)  # 3 min
-    except:
-            crearcsv()
+#while True:
+#    try:
+#        crearcsv()
+#        print('recolectando datos del servidor: Espere 3 min ')
+#        time.sleep(180)  # 3 min
+#    except:
+#            crearcsv()
+
+try:
+    crearcsv()
+    print('recolectando datos del servidor: Espere 3 min ')
+    
+except:
+    crearcsv()
