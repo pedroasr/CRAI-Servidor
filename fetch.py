@@ -314,7 +314,7 @@ def crearcsv():
         df.to_csv(f, mode='a', header=False)
     
     nombrecsv = time.strftime('%d%m%Y', time.localtime())
-    df = pd.read_csv('04112021.csv')
+    df = pd.read_csv(fetch.py)
     #print(df)
     print(1)
 while True:
