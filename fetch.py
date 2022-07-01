@@ -304,7 +304,7 @@ def crearcsv():
         c = c + 1
     # print(RRate)
     # Generamos el Dataframe con cada una de las peticiones que hemos realizado al servidor
-    nombre = time.strftime('%d%m%Y', time.localtime())+".csv" #Nombre del archivo
+    nombre = "eduroam/"+time.strftime('%d%m%Y', time.localtime())+".csv" #Nombre del archivo
     data = [timestamp, MACUSR, MACW, IPuser,IPAP, nombre, sistema, snr, TXframes, TXBytes, TRetries, TRate, RXframes, RXBytes, RRetries, RRate]
 
     df = pd.DataFrame(data, index=['timestamp', 'MAC','MACWLAN', 'IP', 'IPAP', 'Nombre', 'sistema operativo', 'relacion SN', 'TXDataFr', 'TXDataBy',
@@ -312,7 +312,7 @@ def crearcsv():
     df = df.transpose()
     df.columns = {'timestamp', 'MAC','MACWLAN', 'IP', 'IPAP', 'Nombre', 'sistema operativo', 'relacion SN', 'TXDataFr', 'TXDataBy',
                   'TXRetries', 'TXRate', 'RXDataFr', 'RXDataBy', 'RXRetries', 'RXRate'}
-    with open('13062022.csv', 'a') as f:
+    with open(nombre, 'a') as f:
         df.to_csv(f, mode='a', header=False)
 
     #df = pd.read_csv('06122021.csv')
