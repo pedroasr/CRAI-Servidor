@@ -217,10 +217,10 @@ client.on('message', function (topic, message) {
     case 'keepalive':
 
       
-      let rasp = JSON.parse(message)
+      /*let rasp = JSON.parse(message)
       console.log("Received: ")
       console.log(rasp)
-      saveMonitor(rasp);
+      saveMonitor(rasp);*/
       //botcrai.botSendMessage(`${rasp.id}--> T: ${rasp.temp}ºC`)
       monitor.insertOne(JSON.parse(message))
       break;
