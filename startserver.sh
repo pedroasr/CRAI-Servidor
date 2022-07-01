@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "Starting Server"
 pm2 save
 sleep(10)
 
@@ -14,3 +15,5 @@ pm2 start app.js --time --watch
 
 echo "Starting CSV generator"
 pm2 start csvexport.js --time --watch
+
+pm2 delete startserver.sh
