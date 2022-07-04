@@ -100,7 +100,7 @@ const main = () => {
         
         console.log(chain)
 
-        if(okCount = 6){
+        if(okCount == 6){
             chain = "Todo OK"
         }
         botcrai.botSendMessage(chain)
