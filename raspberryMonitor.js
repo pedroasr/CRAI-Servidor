@@ -5,7 +5,7 @@ var options = {
   'method': 'GET',
   'url': 'http://10.147.18.134:18083/api/v4/clients',
   'headers': {
-    'Authorization': 'Basic YWRtaW46NTgyMzE5Mzd1cGN0MjAyMg=='
+    'Authorization': 'INSERT_HERE'
   }
 };
 let ids = [{"id":'Raspberry1'},{"id":'Raspberry2'},{"id":'Raspberry3'},{"id":'Raspberry5'},{"id":'Raspberry6'},{"id":'Raspberry7'}]
