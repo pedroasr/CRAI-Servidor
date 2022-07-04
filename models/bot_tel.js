@@ -23,8 +23,8 @@ bot.onText(/\/get (.+)/, (msg, match) => {
   id = parseInt(resp.split('R')[1])-1
   console.log("BOT- "+id)
   console.log(sniffers[id])
-  let toret = ''
-
+  let toret = 'Caracteristica deshabilitada por el momento'
+  /*
   if(id != 6){
 
     toret = `Devolviendo informacion sobre ${sniffers[id].id}:\n 
@@ -37,7 +37,7 @@ bot.onText(/\/get (.+)/, (msg, match) => {
 
   }else{
 
-  }
+  }*/
 
   
   
@@ -60,4 +60,5 @@ const botSendMessage = (msgToBot) => {
 
 }
 
+botSendMessage("Hello World!.\n Versión 2 alpha.\n Monitorizacion basada en EMQX")
 module.exports = {botSendMessage,updateInfo};

@@ -1,6 +1,6 @@
 const mqtt = require('mqtt')
 const database = require('./database')
-const botcrai = require('./bot_tel')
+//const botcrai = require('./bot_tel')
 
 class Mqtt_cli{
 
@@ -63,12 +63,13 @@ for(let i = 0;i<5;i++){
   sniffers[i] = empty
 }
 
-botcrai.updateInfo(sniffers)
+//botcrai.updateInfo(sniffers)
 
 let okCount = 0
 const maxTemp = 55;
 
 //Bot report status every 15 minutes
+/*
 setInterval(()=>{
 
   let msg = `Dispositivos OK: ${okCount}.\n`;
@@ -89,8 +90,8 @@ setInterval(()=>{
 
   botcrai.botSendMessage(msg)
   okCount = 0;
-},60 * 1000 * 15) //Cada 15 minutos
-
+},60 * 1000 * 15)*/ //Cada 15 minutos
+/*
 let ind = 1;
 
 const saveMonitor = (dato) => {
@@ -188,7 +189,7 @@ const saveMonitor = (dato) => {
     console.log("Falta programar terabee")
   }
 }
-
+*/
 
 client.on('message', function (topic, message) {
 
