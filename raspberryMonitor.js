@@ -1,11 +1,12 @@
 var request = require('request');
 const botcrai = require('./models/bot_tel')
+require("dotenv").config();
 
 var options = {
   'method': 'GET',
   'url': 'http://10.147.18.134:18083/api/v4/clients',
   'headers': {
-    'Authorization': 'INSERT_HERE'
+    'Authorization': process.env.mqtt
   }
 };
 let ids = [{"id":'Raspberry1'},{"id":'Raspberry2'},{"id":'Raspberry3'},{"id":'Raspberry5'},{"id":'Raspberry6'},{"id":'Raspberry7'}]
