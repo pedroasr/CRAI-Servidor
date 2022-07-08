@@ -234,9 +234,9 @@ client.on('message', function (topic, message) {
       let datosco2 = {
         'Id':parseInt(message[0]),
         'Num. Secuencia':parseInt(message[1]),
-        'CO2':(message[1]<<8|message[2]),
-        'Temperature':(message[3]+message[4]/256),
-        'Humidity':(message[5]+message[6]/256)
+        'CO2':(message[2]<<8|message[3]),
+        'Temperature':(message[4]+message[5]/256),
+        'Humidity':(message[6]+message[7]/256)
       }
 
       esp.insertOne(datosco2)
