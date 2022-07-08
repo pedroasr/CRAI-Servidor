@@ -192,6 +192,22 @@ const saveMonitor = (dato) => {
 }
 */
 
+/* Timestamp*/
+function pad(n, z) {
+  z = z || 2;
+  return ("00" + n).slice(-z);
+}
+
+const getFechaCompleta = () => {
+  let d = new Date(),
+    dformat =
+      [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join("-") +
+      " " +
+      [pad(d.getHours()), pad(d.getMinutes()), pad(d.getSeconds())].join(":");
+
+  return dformat;
+};
+
 client.on('message', function (topic, message) {
 
   switch(topic){
@@ -232,11 +248,12 @@ client.on('message', function (topic, message) {
       console.log(message)
 
       let datosco2 = {
-        'Id':parseInt(message[0]),
+        'Id':"esp32co2_"+parseInt(message[0]),
         'Num. Secuencia':parseInt(message[1]),
         'CO2':(message[2]<<8|message[3]),
-        'Temperature':(message[4]+message[5]/256),
-        'Humidity':(message[6]+message[7]/256)
+        'Temperature':(message[4]+message[5]/256).toFixed(2),
+        'Humidity':(message[6]+message[7]/256).toFixed(2),
+        'Timestamp':getFechaCompleta()
       }
 
       esp.insertOne(datosco2)

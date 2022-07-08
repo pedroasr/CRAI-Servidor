@@ -97,7 +97,7 @@ const main = () => {
 
         //console.log(ids)
 
-        ids = [{"id":'Raspberry1'},{"id":'Raspberry2'},{"id":'Raspberry3'},{"id":'Raspberry5'},{"id":'Raspberry6'},{"id":'Raspberry7'}]
+        ids = [{"id":'Raspberry1'},{"id":'Raspberry2'},{"id":'Raspberry3'},{"id":'Raspberry5'},{"id":'Raspberry6'},{"id":'Raspberry7'},{"id":"esp32co2_1"},{"id":"esp32co2_2"}]
         
         console.log(chain)
 
