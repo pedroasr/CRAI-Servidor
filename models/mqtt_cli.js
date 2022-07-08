@@ -229,8 +229,11 @@ client.on('message', function (topic, message) {
 
     case 'CRAIUPCT_co2':
 
+      console.log(message)
+
       let datosco2 = {
         'Id':parseInt(message[0]),
+        'Num. Secuencia':parseInt(message[1]),
         'CO2':(message[1]<<8|message[2]),
         'Temperature':(message[3]+message[4]/256),
         'Humidity':(message[5]+message[6]/256)
