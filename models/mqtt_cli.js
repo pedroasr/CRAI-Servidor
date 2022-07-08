@@ -12,12 +12,13 @@ class Mqtt_cli{
     
 }
 
-let topics = ['CRAIUPCTPersonCount','CRAIUPCT_BLEdata','CRAIUPCT_WifiData','keepalive']
+let topics = ['CRAIUPCTPersonCount','CRAIUPCT_BLEdata','CRAIUPCT_WifiData','keepalive','CRAIUPCT_co2']
 //const client = mqtt.connect('mqtt://localhost'); 
 const door = database.getCollection('DoorSensors')
 const ble = database.getCollection('BLE')
 const wifi = database.getCollection('wifi')
 const monitor = database.getCollection('monitor')
+const esp = database.getCollection('AirMeasurement')
 
 /*MQTT */
 
@@ -224,6 +225,18 @@ client.on('message', function (topic, message) {
       saveMonitor(rasp);*/
       //botcrai.botSendMessage(`${rasp.id}--> T: ${rasp.temp}ºC`)
       monitor.insertOne(JSON.parse(message))
+      break;
+
+    case 'CRAIUPCT_co2':
+
+      let datosco2 = {
+        'Id':parseInt(message[0]),
+        'CO2':(message[1]<<8|message[2]),
+        'Temperature':(message[3]+message[4]/256),
+        'Humidity':(message[5]+message[6]/256)
+      }
+
+      esp.insertOne(datosco2)
       break;
 
   }

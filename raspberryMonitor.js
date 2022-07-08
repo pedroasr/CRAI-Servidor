@@ -9,7 +9,7 @@ var options = {
     'Authorization': process.env.mqtt
   }
 };
-let ids = [{"id":'Raspberry1'},{"id":'Raspberry2'},{"id":'Raspberry3'},{"id":'Raspberry5'},{"id":'Raspberry6'},{"id":'Raspberry7'}]
+let ids = [{"id":'Raspberry1'},{"id":'Raspberry2'},{"id":'Raspberry3'},{"id":'Raspberry5'},{"id":'Raspberry6'},{"id":'Raspberry7'},{"id":"esp32co2_1"},{"id":"esp32co2_2"}]
 
 
 
@@ -63,7 +63,7 @@ const main = () => {
 
             if(ids[c].status == undefined){
                 sub += "Disconnected from MQTT"
-            }else if(ids[c].id != "Raspberry6"){
+            }else if(ids[c].id != "Raspberry6" && !ids[c].id.includes("esp")){
                 
                 if(ids[c].BLEface == undefined)
                     sub += "BLE down "

@@ -3,7 +3,7 @@ import time
 
 ## Parametros
 
-sampling = 10 #Periodo de muestreo
+sampling = 5 #Periodo de muestreo
 
 if sampling > 60:
     print("Max sampling period is 60!")
@@ -21,7 +21,7 @@ print(f'Hora inicio: {hora_inicio}')
 
 #Para localizar los CSVs
 nombre_target = "./csv/ble_"+time.strftime('%Y-%m-%d', time.localtime())+"_7-22.csv" #Nombre del archivo
-nombre_filter = "./csv/ble_filter_"+time.strftime('%Y-%m-%d', time.localtime())+"_samp"+sampling+".csv"
+nombre_filter = "./csv/ble_filter_"+time.strftime('%Y-%m-%d', time.localtime())+"_samp"+str(sampling)+".csv"
 filter_cols = ['Indice int. muestreo','Timestamp int.','Raspberry','Timestamp inicial','Nº Mensajes','MAC','Tipo MAC','Tipo ADV','BLE Size','RSP Size','BLE Data','RSSI promedio']
 nseq = 0
 
