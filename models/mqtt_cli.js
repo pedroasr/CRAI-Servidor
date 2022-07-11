@@ -245,7 +245,7 @@ client.on('message', function (topic, message) {
 
     case 'CRAIUPCT_co2':
 
-      console.log(message)
+      //console.log(message)
 
       let datosco2 = {
         'Id':"esp32co2_"+parseInt(message[0]),
@@ -255,7 +255,7 @@ client.on('message', function (topic, message) {
         'Humidity':(message[6]+message[7]/256).toFixed(2),
         'Timestamp':getFechaCompleta()
       }
-
+      console.log(datosco2)
       esp.insertOne(datosco2)
       break;
 

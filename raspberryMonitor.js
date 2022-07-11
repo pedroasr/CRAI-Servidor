@@ -9,7 +9,7 @@ var options = {
     'Authorization': process.env.mqtt
   }
 };
-let ids = [{"id":'Raspberry1'},{"id":'Raspberry2'},{"id":'Raspberry3'},{"id":'Raspberry5'},{"id":'Raspberry6'},{"id":'Raspberry7'},{"id":"esp32co2_1"},{"id":"esp32co2_2"}]
+let ids = [{"id":'Raspberry1'},{"id":'Raspberry2'},{"id":'Raspberry3'},{"id":'Raspberry5'},{"id":'Raspberry6'},{"id":'Raspberry7'}]
 
 
 
@@ -55,15 +55,15 @@ const main = () => {
         }
         
         //Check out
-        let chain = 'Estado Raspberry: \n'
+        let chain = 'Estado Raspberry y Sensores: \n'
         let sub = ''
         for(c in ids){
             let count = 0
             chain += `${ids[c].id}: `
 
             if(ids[c].status == undefined){
-                sub += "Disconnected from MQTT"
-            }else if(ids[c].id != "Raspberry6" && !ids[c].id.includes("esp")){
+                sub += "Desconectado de MQTT"
+            }else if(ids[c].id != "Raspberry6"){
                 
                 if(ids[c].BLEface == undefined)
                     sub += "BLE down "
@@ -97,7 +97,7 @@ const main = () => {
 
         //console.log(ids)
 
-        ids = [{"id":'Raspberry1'},{"id":'Raspberry2'},{"id":'Raspberry3'},{"id":'Raspberry5'},{"id":'Raspberry6'},{"id":'Raspberry7'},{"id":"esp32co2_1"},{"id":"esp32co2_2"}]
+        ids = [{"id":'Raspberry1'},{"id":'Raspberry2'},{"id":'Raspberry3'},{"id":'Raspberry5'},{"id":'Raspberry6'},{"id":'Raspberry7'}]
         
         console.log(chain)
 

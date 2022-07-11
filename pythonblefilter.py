@@ -20,8 +20,8 @@ print(f'Hora inicio: {hora_inicio}')
 ## Variables funcionamiento
 
 #Para localizar los CSVs
-nombre_target = "./csv/ble_"+time.strftime('%Y-%m-%d', time.localtime())+"_7-22.csv" #Nombre del archivo
-nombre_filter = "./csv/ble_filter_"+time.strftime('%Y-%m-%d', time.localtime())+"_samp"+str(sampling)+".csv"
+nombre_target = "/home/servidoridiit1upct/CRAI-Servidor/csv/ble_"+time.strftime('%Y-%m-%d', time.localtime())+"_7-22.csv" #Nombre del archivo
+nombre_filter = "./csv_filter/ble_filter_"+time.strftime('%Y-%m-%d', time.localtime())+"_samp"+str(sampling)+".csv"
 filter_cols = ['Indice int. muestreo','Timestamp int.','Raspberry','Timestamp inicial','Nº Mensajes','MAC','Tipo MAC','Tipo ADV','BLE Size','RSP Size','BLE Data','RSSI promedio']
 nseq = 0
 
