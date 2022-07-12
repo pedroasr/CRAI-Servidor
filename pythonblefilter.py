@@ -69,7 +69,7 @@ while go:
     
     #Start filtering
     for index, row in aux.iterrows():
-        if ((datos_filtrados['Raspberry'] ==  row['Id']) & (datos_filtrados['MAC'] == row['MAC']) & (datos_filtrados['BLE Data'] == row['Advertisement'])).any():
+        if ((datos_filtrados['Raspberry'] == row['Id']) & (datos_filtrados['MAC'] == row['MAC']) & (datos_filtrados['BLE Data'] == row['Advertisement'])).any():
             
             indice = datos_filtrados.loc[(datos_filtrados['Raspberry'] ==  row['Id']) & (datos_filtrados['MAC'] == row['MAC']) & (datos_filtrados['BLE Data'] == row['Advertisement'])].index[0]
 
@@ -98,3 +98,5 @@ while go:
 
 hora_fin = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 print(f'Filtrado acabado, hora: {hora_fin}')
+print("Llamando al script de limpieza")
+import pythonblecleaner
