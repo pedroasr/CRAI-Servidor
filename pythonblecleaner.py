@@ -7,8 +7,8 @@ sampling = 5
 nombre_target = "./csv_filter/ble_filter_"+time.strftime('%Y-%m-%d', time.localtime())+"_samp5.csv"
 nombre_filter = "./csv_filter/ble-filter-clean-P_"+time.strftime('%Y-%m-%d', time.localtime())+".csv"
 
-#nombre_lista = "/home/servidoridiit1upct/CRAI-Servidor/mac_filter.csv"
-nombre_lista = "./mac_filter.csv"
+nombre_lista = "/home/servidoridiit1upct/CRAI-Servidor/mac_filter.csv"
+#nombre_lista = "./mac_filter.csv"
 filter_cols = ['Indice int. muestreo','Timestamp int.','Raspberry','Timestamp inicial','Nº Mensajes','MAC','Tipo MAC','Tipo ADV','BLE Size','RSP Size','BLE Data','RSSI promedio']
 
 lista_filtro = pd.read_csv(nombre_lista,delimiter=';')
