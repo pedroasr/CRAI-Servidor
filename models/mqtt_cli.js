@@ -11,8 +11,8 @@ class Mqtt_cli{
     }
     
 }
-
-let topics = ['CRAIUPCTPersonCount','CRAIUPCT_BLEdata','CRAIUPCT_WifiData','keepalive','CRAIUPCT_co2']
+let coseq = new Array(255)
+let topics = ['CRAIUPCT_co2ble','CRAIUPCTPersonCount','CRAIUPCT_BLEdata','CRAIUPCT_WifiData','keepalive','CRAIUPCT_co2']
 //const client = mqtt.connect('mqtt://localhost'); 
 const door = database.getCollection('DoorSensors')
 const ble = database.getCollection('BLE')
@@ -253,10 +253,86 @@ client.on('message', function (topic, message) {
         'CO2':(message[2]<<8|message[3]),
         'Temperature':(message[4]+message[5]/256).toFixed(2),
         'Humidity':(message[6]+message[7]/256).toFixed(2),
-        'Timestamp':getFechaCompleta()
+        'Timestamp':getFechaCompleta(),
+        'Battery':228
       }
       console.log(datosco2)
       esp.insertOne(datosco2)
+      break;
+
+    case 'CRAIUPCT_co2ble':
+
+      let id = parseInt(message[0])
+      let nseq = parseInt(message[1])
+      let bat = parseInt(message[14])
+      if(bat > 100){
+        bat = bat-128
+
+      }
+
+      if(coseq[id] != nseq){
+
+        let datosco2 = {
+          'Id':"esp32co2_"+id,
+          'Num. Secuencia':nseq,
+          'CO2':(message[2]<<8|message[3]),
+          'Temperature':(message[4]+message[7]/256).toFixed(2),
+          'Humidity':(message[6]+message[7]/256).toFixed(2),
+          'Timestamp':getFechaCompleta(),
+          'Battery':bat,
+          
+        }
+        console.log(datosco2)
+        esp.insertOne(datosco2)
+        
+        
+
+        if(nseq == 0){
+
+          if(coseq[id]!=255){
+
+            nseq = 255
+  
+            datosco2 = {
+              'Id':"esp32co2_"+id,
+              'Num. Secuencia':nseq,
+              'CO2':(message[8]<<8|message[9]),
+              'Temperature':(message[10]+message[11]/256).toFixed(2),
+              'Humidity':(message[12]+message[13]/256).toFixed(2),
+              'Timestamp':getFechaCompleta(),
+              'Battery':bat,
+              
+            }
+            console.log(datosco2)
+            esp.insertOne(datosco2)
+
+          }
+
+        }else if(coseq[id]+1 != nseq){
+
+          
+
+          datosco2 = {
+            'Id':"esp32co2_"+id,
+            'Num. Secuencia':nseq-1,
+            'CO2':(message[8]<<8|message[9]),
+            'Temperature':(message[10]+message[11]/256).toFixed(2),
+            'Humidity':(message[12]+message[13]/256).toFixed(2),
+            'Timestamp':getFechaCompleta(),
+            'Battery':bat,
+            
+          }
+          console.log(datosco2)
+          esp.insertOne(datosco2)
+
+        }
+
+        coseq[id] = nseq
+
+      }
+
+      
+
       break;
 
   }
