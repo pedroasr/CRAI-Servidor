@@ -1,6 +1,9 @@
 var request = require('request');
 const botcrai = require('./models/bot_tel')
+const database = require('./models/database')
 require("dotenv").config();
+
+const nsen = database.getCollection("SensorManagement")
 
 var options = {
   'method': 'GET',
@@ -110,6 +113,56 @@ const main = () => {
 
 }
 
+let maxco2 = 1000
+
+const main2 = () => {
+
+    
+    let chain = "ESP32 Sensors OK: "
+    let sok = 0
+    let sc = "ESP32 Down: "
+    let cod = "CO2 Warning: "
+    let bw = "Battery Warning: "
+
+    nsen.find({}).toArray(function(err, result) {
+        if (err) throw err;
+        
+        result.forEach(element => {
+            
+            if(element.found == 1){
+                sok++
+            }else{
+                sc += element.Id+", "
+            }
+
+            if(element.CO2 > maxco2)
+                cod += element.Id+", "
+            
+            if(element.Battery < 20)
+                bw += element.Id+", "
+
+        });
+
+        chain += sok+"\n"+sc+"\n"
+
+        if(cod.length > 13)
+            chain += cod+"\n"
+        
+        if(bw.length > 17)
+            chain += bw+"\n"
+
+        botcrai.botSendMessage(chain)
+
+        
+      });
+
+}
+
 
 main()
-setInterval(main,1000*60*10)
+main2()
+
+setInterval(() => {
+    main()
+    main2()
+},1000*60*10)

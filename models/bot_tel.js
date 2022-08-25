@@ -60,5 +60,5 @@ const botSendMessage = (msgToBot) => {
 
 }
 
-botSendMessage("Hello World!\n Versión 2 alpha.\n Monitorizacion basada en EMQX")
+botSendMessage("Hello World!\n Versión 4 alpha.\n Monitorizacion basada en EMQX")
 module.exports = {botSendMessage,updateInfo};

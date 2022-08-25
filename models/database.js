@@ -39,4 +39,5 @@ const getCollection = (colec) => {   // == Table SQL
 
 
 
+
 module.exports = {getDatabase,getCollection};

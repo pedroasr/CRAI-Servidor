@@ -3,6 +3,7 @@ const database = require('./database')
 const sqldata = require('./database_sql')
 
 
+
 //const botcrai = require('./bot_tel')
 
 class Mqtt_cli{
@@ -14,7 +15,27 @@ class Mqtt_cli{
     }
     
 }
+
 let coseq = new Array(255)
+let cotf;
+
+function getSensorById(code) {
+  return cotf.filter(
+      function(cotf){ return cotf.Id == code }
+  );
+}
+
+function unchecksen(){
+
+  cotf.forEach(element => {
+    element.found = 0
+    delete element["_id"]
+  });
+
+}
+
+
+
 let topics = ['CRAIUPCT_co2ble','CRAIUPCTPersonCount','CRAIUPCT_BLEdata','CRAIUPCT_WifiData','keepalive','CRAIUPCT_co2']
 //const client = mqtt.connect('mqtt://localhost'); 
 const door = database.getCollection('DoorSensors')
@@ -22,6 +43,16 @@ const ble = database.getCollection('BLE')
 const wifi = database.getCollection('wifi')
 const monitor = database.getCollection('monitor')
 const esp = database.getCollection('AirMeasurement')
+const nsen = database.getCollection("SensorManagement")
+
+nsen.find({}).toArray(function(err, result) {
+  if (err) throw err;
+  
+  cotf = result
+  
+  unchecksen()
+  
+});
 
 /*MQTT */
 
@@ -262,7 +293,17 @@ client.on('message', function (topic, message) {
       console.log(datosco2)
       esp.insertOne(datosco2)
       sqldata.store(datosco2)
+      
+      getSensorById(datosco2.Id)[0].found = 1
+      getSensorById(datosco2.Id)[0].CO2 = datosco2.CO2
+      getSensorById(datosco2.Id)[0].Temperature = datosco2.Temperature
+      getSensorById(datosco2.Id)[0].Humidity = datosco2.Humidity
+      getSensorById(datosco2.Id)[0].Battery = datosco2.Battery
+      getSensorById(datosco2.Id)[0].Timestamp = datosco2.Timestamp
+      nsen.updateOne({Id:datosco2.Id},{ $set: getSensorById(datosco2.Id)[0]})
       break;
+      
+
 
     case 'CRAIUPCT_co2ble':
 
@@ -286,6 +327,14 @@ client.on('message', function (topic, message) {
           'Battery':bat,
           
         }
+        
+        getSensorById(datosco2.Id)[0].found = 1
+        getSensorById(datosco2.Id)[0].CO2 = datosco2.CO2
+        getSensorById(datosco2.Id)[0].Temperature = datosco2.Temperature
+        getSensorById(datosco2.Id)[0].Humidity = datosco2.Humidity
+        getSensorById(datosco2.Id)[0].Battery = datosco2.Battery
+        getSensorById(datosco2.Id)[0].Timestamp = datosco2.Timestamp
+        nsen.updateOne({Id:datosco2.Id},{ $set: getSensorById(datosco2.Id)[0]})
         console.log(datosco2)
         esp.insertOne(datosco2)
 
@@ -350,5 +399,15 @@ client.on('message', function (topic, message) {
     
 
 })
+
+setInterval(()=> {
+  
+  cotf.forEach(element => {
+    if(element.found==0){
+      nsen.updateOne({Id:element.Id},{ $set: getSensorById(element.Id)[0]})
+    }
+  });
+  unchecksen();
+},1000*60*10)
 
 module.exports = Mqtt_cli;
