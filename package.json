@@ -7,6 +7,8 @@
     "https": "^1.0.0",
     "mongodb": "^4.7.0",
     "mqtt": "^4.3.7",
+    "mysql": "^2.18.1",
     "node-telegram-bot-api": "^0.57.0"
+    
   }
 }

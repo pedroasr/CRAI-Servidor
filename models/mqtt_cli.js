@@ -1,5 +1,8 @@
 const mqtt = require('mqtt')
 const database = require('./database')
+const sqldata = require('./database_sql')
+
+
 //const botcrai = require('./bot_tel')
 
 class Mqtt_cli{
@@ -258,6 +261,7 @@ client.on('message', function (topic, message) {
       }
       console.log(datosco2)
       esp.insertOne(datosco2)
+      sqldata.store(datosco2)
       break;
 
     case 'CRAIUPCT_co2ble':
@@ -276,55 +280,61 @@ client.on('message', function (topic, message) {
           'Id':"esp32co2_"+id,
           'Num. Secuencia':nseq,
           'CO2':(message[2]<<8|message[3]),
-          'Temperature':(message[4]+message[7]/256).toFixed(2),
-          'Humidity':(message[6]+message[7]/256).toFixed(2),
+          'Temperature':(message[4]+message[5]/100).toFixed(2),
+          'Humidity':(message[6]+message[7]/100).toFixed(2),
           'Timestamp':getFechaCompleta(),
           'Battery':bat,
           
         }
         console.log(datosco2)
         esp.insertOne(datosco2)
+
+        sqldata.store(datosco2)
         
         
+        if(message[10]!=0){
 
-        if(nseq == 0){
+          if(nseq == 0){
 
-          if(coseq[id]!=255){
+            if(coseq[id]!=255){
 
-            nseq = 255
-  
+              nseq = 255
+            
+              datosco2 = {
+                'Id':"esp32co2_"+id,
+                'Num. Secuencia':nseq,
+                'CO2':(message[8]<<8|message[9]),
+                'Temperature':(message[10]+message[11]/256).toFixed(2),
+                'Humidity':(message[12]+message[13]/256).toFixed(2),
+                'Timestamp':getFechaCompleta(),
+                'Battery':bat,
+
+              }
+              console.log(datosco2)
+              esp.insertOne(datosco2)
+              sqldata.store(datosco2)
+
+            }
+
+          }else if(coseq[id]+1 != nseq){
+
+
+
             datosco2 = {
               'Id':"esp32co2_"+id,
-              'Num. Secuencia':nseq,
+              'Num. Secuencia':nseq-1,
               'CO2':(message[8]<<8|message[9]),
-              'Temperature':(message[10]+message[11]/256).toFixed(2),
-              'Humidity':(message[12]+message[13]/256).toFixed(2),
+              'Temperature':(message[10]+message[11]/100).toFixed(2),
+              'Humidity':(message[12]+message[13]/100).toFixed(2),
               'Timestamp':getFechaCompleta(),
               'Battery':bat,
-              
+
             }
             console.log(datosco2)
             esp.insertOne(datosco2)
+            sqldata.store(datosco2)
 
           }
-
-        }else if(coseq[id]+1 != nseq){
-
-          
-
-          datosco2 = {
-            'Id':"esp32co2_"+id,
-            'Num. Secuencia':nseq-1,
-            'CO2':(message[8]<<8|message[9]),
-            'Temperature':(message[10]+message[11]/256).toFixed(2),
-            'Humidity':(message[12]+message[13]/256).toFixed(2),
-            'Timestamp':getFechaCompleta(),
-            'Battery':bat,
-            
-          }
-          console.log(datosco2)
-          esp.insertOne(datosco2)
-
         }
 
         coseq[id] = nseq

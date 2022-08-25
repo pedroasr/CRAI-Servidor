@@ -4,7 +4,7 @@ require("dotenv").config();
 
 var options = {
   'method': 'GET',
-  'url': 'http://10.147.18.134:18083/api/v4/clients',
+  'url': `http://${process.env.sqlink}:18083/api/v4/clients`,
   'headers': {
     'Authorization': process.env.mqtt
   }
