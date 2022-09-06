@@ -48,7 +48,7 @@
 
     
     sudo pm2 start app.js
-    sudo pm2 start raspberryMonitor.js
+    sudo pm2 start deviceMonitor.js
     sudo pm2 start csvexport.js
     sudo pm2 save
     
