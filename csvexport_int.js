@@ -1,4 +1,5 @@
 const fs = require('fs');
+var spawn = require("child_process").spawn;
 
 var database = require("./models/database");
 
@@ -64,9 +65,9 @@ const getInt = () => {
 
     
     if ((d.getMinutes() - interval) < 0)
-        dformat = [pad(d.getHours()-1),d.getMinutes()-interval+60].join(":")
+        dformat = [pad(d.getHours()-1),pad(d.getMinutes()-interval+60)].join(":")
     else
-        dformat = [pad(d.getHours()),pad(d.getMinutes()-interval)]
+        dformat = [pad(d.getHours()),pad(d.getMinutes()-interval)].join(":")
     
     return dformat
 } 
@@ -77,7 +78,9 @@ let content = {}
 
 const door = () => {
 
-    fs.writeFile(`csv/PersonCount_${getFecha()}_7-22.csv`, cabecera, { flag: 'w' }, err => {});    
+    pcount_trg_t = pcount_trg+getInt()+"-"+getHora()+".csv";
+
+    fs.writeFile(pcount_trg_t, cabecera, { flag: 'w' }, err => {});    
 
     /*var db = client.db("CRAI-UPCT");
     var collection = db.collection("DoorSensors");*/    //var query = {"date": {"$gte": new Date(`${isodate()}Z05:00:00.000T`), "$lt": new Date(`${isodate()}Z20:00:00.000T`)}};//, "$lt": `${getFecha()} 22:00:00`
@@ -91,14 +94,14 @@ const door = () => {
             
             if(doc.timestamp !== undefined){
                 content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.eventoIO ? 1 : 0};${doc.entradasSensorDer};${doc.entradasSensorIzq};${doc.entradasTotal};${doc.salidasSensorDer};${doc.salidasSensorIzq};${doc.salidasTotal};${doc.estPersonas}\r\n`
-                fs.writeFile(`csv/PersonCount_${getFecha()}_7-22.csv`, content, { flag: 'a' }, err => {});
+                fs.writeFile(pcount_trg_t, content, { flag: 'a' }, err => {});
             
             } 
         
         }
     );  
 
-    pcount_trg_t = pcount_trg+getHora();
+    
     
     console.log("Person count data saved");
 
@@ -108,7 +111,9 @@ const door = () => {
 
 const wifi = () => {
 
-    fs.writeFile(`csv/wifi_${getFecha()}_7-22.csv`, cabecerawifi, { flag: 'w' }, err => {});
+    wifi_trg_t = wifi_trg+getInt()+"-"+getHora()+".csv";
+
+    fs.writeFile(wifi_trg_t, cabecerawifi, { flag: 'w' }, err => {});
 
     var query = {"timestamp": {"$gte": `${getFecha()} ${getInt()}:00`, "$lt": `${getFecha()} ${getHora()}:00`}};
     //var query = {"timestamp": {"$gte": `2022-06-29 07:00:00`, "$lt": `2022-06-29 22:00:00`}};
@@ -119,19 +124,19 @@ const wifi = () => {
 
     console.log(`Saving Wifi data of the day`)
 
-
+    
     cursor.forEach(
         function(doc) {
             if(doc.timestamp !== undefined){
                 content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.id};${doc.canal};${doc.ssid};${doc.OrigMAC};${doc.rssi}\r\n`
-                fs.writeFile(`csv/wifi_${getFecha()}_7-22.csv`, content, { flag: 'a' }, err => {});
+                fs.writeFile(wifi_trg_t, content, { flag: 'a' }, err => {});
             
             }
         
         }
     );   
 
-    wifi_trg_t = wifi_trg+getHora();
+    
     
     console.log("Wifi data saved");
         
@@ -140,8 +145,10 @@ const wifi = () => {
 
 
 const ble = () => {
+
+    ble_trg_t = ble_trg+getInt()+"-"+getHora()+".csv";
     
-    fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, cabecerable, { flag: 'w' }, err => {});
+    fs.writeFile(ble_trg_t, cabecerable, { flag: 'w' }, err => {});
 
 
     var query = {"timestamp": {"$gte": `${getFecha()} ${getInt()}:00`, "$lt": `${getFecha()} ${getHora()}:00`}};
@@ -156,13 +163,17 @@ const ble = () => {
             if(doc.timestamp !== undefined){
                 
                 content = `${doc.timestamp.split(" ")[0]};${doc.timestamp.split(" ")[1]};${doc.idRasp};${doc.mac};${doc.tipoMac};${doc.bleSize};${doc.rspSize};${doc.tipoADV};${doc.bleData};${doc.rssi}\r\n`
-                fs.writeFile(`csv/ble_${getFecha()}_7-22.csv`, content, { flag: 'a' }, err => {});
+                fs.writeFile(ble_trg_t, content, { flag: 'a' }, err => {
+                    
+                });
+                
                 
             }
         }
     );   
     
-    ble_trg_t = ble_trg+getHora();
+    //fs.writeFile(ble_trg_t,"END-OF-LINE",{flag:'a'}, err => {})
+    
      
     console.log("BLE data saved");
 
@@ -173,9 +184,17 @@ const main = () => {
     wifi();
     ble();
 
-    var ble_s = spawn('python',["./pythonfilter_int.py",
-                                ble_trg_t,
-                                pcount_trg_t]);
+    console.log(ble_trg_t)
+
+    var ble_s = spawn('python3',["./pythonfilter_int.py",
+                                ble_trg_t]);
+
+    ble_s.stdout.on('data', function (data) {
+        console.log('Python>');
+        console.log(dataToSend = data.toString());
+       });
+
+    
 
 }
 
