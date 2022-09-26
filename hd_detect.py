@@ -49,6 +49,7 @@ for index, row in datos_ble.iterrows():
 #Now dont save in csv
 datos_filtrados['RSSI promedio'] = datos_filtrados['RSSI promedio']/datos_filtrados['Nº Mensajes']
 
+datos_filtrados.to_csv("./csv/a.csv")
 
 #datos_filtrados.to_csv(nombre_filter,sep = ';',mode='w',header=True,index=False)
 
