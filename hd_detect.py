@@ -20,7 +20,7 @@ while fsize == 74:
     time.sleep(10)
 
 intervalo = nombre_target.split("-")[0].split("_")[1]
-nombre_filter = "./csv_filter/ble_filter_"+nombre_target.split("_")[1]
+nombre_filter = "./csv/int/ble_filter_"+nombre_target.split("_")[1]
 filter_cols = ['Timestamp int.','Raspberry','Timestamp inicial','Nº Mensajes','MAC','Tipo MAC','Tipo ADV','BLE Size','RSP Size','BLE Data','RSSI promedio']
 #['Indice int. muestreo',
 nombre_lista = "./mac_filter.csv"
@@ -49,7 +49,7 @@ for index, row in datos_ble.iterrows():
 #Now dont save in csv
 datos_filtrados['RSSI promedio'] = datos_filtrados['RSSI promedio']/datos_filtrados['Nº Mensajes']
 
-datos_filtrados.to_csv("./csv/a.csv")
+datos_filtrados.to_csv("csv/int/"+time.strftime("%Y-%m-%d")+"_ble.csv",sep=',',index=False,mode='w',header=False)
 
 #datos_filtrados.to_csv(nombre_filter,sep = ';',mode='w',header=True,index=False)
 

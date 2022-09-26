@@ -3,6 +3,7 @@ import pandas as pd
 import time
 import numpy as np
 import sys
+import os
 import mysql.connector
 
 mydb = mysql.connector.connect(
@@ -12,9 +13,15 @@ mydb = mysql.connector.connect(
   database="co2blelr"
 )
 
+
+
 mycursor = mydb.cursor()
 
 direccion = sys.argv[1]
+
+fsize = os.path.getsize(direccion)
+print(fsize)
+
 major = direccion.split("_")[1].split("-")[1].split(".")[0]+":00"
 
 contador_raw = pd.read_csv(direccion,delimiter=';')
@@ -52,7 +59,7 @@ for index,row in contador.iterrows():
             if cuenta < 0:
                 cuenta = 0
     contador.iloc[index,contador.columns.get_loc("personCount")]= cuenta
-contador.to_csv("csv/"+time.strftime("%Y-%m-%d")+"contador.csv",sep=',',index=False,mode='w',header=False)
+contador.to_csv("csv/int/"+time.strftime("%Y-%m-%d")+"_contador.csv",sep=',',index=False,mode='w',header=False)
 
 pc = contador.iloc[-1]['personCount']
 

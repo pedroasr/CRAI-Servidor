@@ -27,9 +27,9 @@ let cabecerawifi = 'Fecha;Hora;Id;Canal;SSID;MAC Origen;RSSI\r\n'
 let cabecerable = 'Fecha;Hora;Id;MAC;Tipo MAC;ADV Size;RSP Size;Tipo ADV;Advertisement;RSSI\r\n'
 
 /* File targets for python scripts */
-wifi_trg = "csv/wifi_"
-ble_trg = "csv/ble_"
-pcount_trg = "csv/pcount_"
+wifi_trg = "csv/int/wifi_"
+ble_trg = "csv/int/ble_"
+pcount_trg = "csv/int/pcount_"
 wifi_trg_t = ""
 ble_trg_t = ""
 pcount_trg_t = ""
@@ -184,7 +184,7 @@ const main = () => {
     wifi();
     ble();
 
-    console.log(ble_trg_t)
+    
 
     var ble_s = spawn('python3',["./hd_detect.py",
                                 ble_trg_t]);
@@ -192,6 +192,15 @@ const main = () => {
     ble_s.stdout.on('data', function (data) {
         dataToSend = data.toString()
         console.log('Python BLE> ' + dataToSend);
+        
+    });
+
+    var pcount_s = spawn('python3',["./hd_PCprocess.py",
+                                pcount_trg_t]);
+
+    pcount_s.stdout.on('data', function (data) {
+        dataToSend = data.toString()
+        console.log('Python Pcount> ' + dataToSend);
         
     });
 
