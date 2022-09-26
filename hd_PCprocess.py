@@ -24,7 +24,7 @@ direccion = sys.argv[1]
 fsize = os.path.getsize(direccion)
 print(fsize)
 
-while fsize == 138:
+while fsize == 145:
     fsize = os.path.getsize(direccion)
     print(">"+fsize)
     time.sleep(10)
