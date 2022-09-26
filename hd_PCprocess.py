@@ -6,11 +6,13 @@ import sys
 import mysql.connector
 
 mydb = mysql.connector.connect(
-  host="localhost:3306",
+  host="localhost",
   user="sqlco2",
   password="sqlpass",
   database="co2blelr"
 )
+
+mycursor = mydb.cursor()
 
 direccion = sys.argv[1]
 major = direccion.split("_")[1].split("-")[1].split(".")[0]+":00"
@@ -54,10 +56,10 @@ contador.to_csv("csv/"+time.strftime("%Y-%m-%d")+"contador.csv",sep=',',index=Fa
 
 pc = contador.iloc[-1]['personCount']
 
-mycursor = mydb.cursor()
 
-sql = "INSERT INTO hd_ocupa (FuenteEst,Estimacion,Timest    amp) VALUES (%s,%d,%s)"
-val = ("Raspberry6",pc,time.strftime("%Y-%m-%d")+major)
+
+sql = "INSERT INTO hd_ocupa (FuenteEst,Estimacion,Timestamp) VALUES (%s,%s,%s)"
+val = ("Raspberry6",pc,time.strftime("%Y-%m-%d")+" "+major)
 mycursor.execute(sql, val)
 
 mydb.commit()
