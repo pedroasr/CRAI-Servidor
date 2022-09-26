@@ -19,8 +19,15 @@ mycursor = mydb.cursor()
 
 direccion = sys.argv[1]
 
+
+
 fsize = os.path.getsize(direccion)
 print(fsize)
+
+while fsize == 138:
+    fsize = os.path.getsize(direccion)
+    print(">"+fsize)
+    time.sleep(10)
 
 major = direccion.split("_")[1].split("-")[1].split(".")[0]+":00"
 
