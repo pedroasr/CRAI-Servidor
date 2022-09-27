@@ -187,9 +187,19 @@ const main = () => {
     console.log(pcount_trg_t)
     exec(`python3 ./hd_PCprocess.py ${pcount_trg_t}`,(error,stdout,stderr)=>{
         if(error !== null){
-            console.log("Python error-> "+ error)
+            console.log("Python error PC-> "+ error)
         }
     })
+    
+    console.log(ble_trg_t)
+    exec(`python3 ./hd_detect.py ${ble_trg_t}`,(error,stdout,stderr)=>{
+        if(error !== null){
+            console.log("Python error BLE-> "+ error)
+        }
+    })
+
+
+
     /*
     var pcount_s = spawn('python3',["./hd_PCprocess.py",
                                 pcount_trg_t]);
