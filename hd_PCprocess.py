@@ -22,14 +22,16 @@ direccion = sys.argv[1]
 
 
 fsize = os.path.getsize(direccion)
-print(fsize)
+#print(fsize)
 
 while fsize == 145:
     fsize = os.path.getsize(direccion)
-    print(">"+fsize)
+    
     time.sleep(10)
 
+#print(fsize)
 major = direccion.split("_")[1].split("-")[1].split(".")[0]+":00"
+#print(major)
 
 contador_raw = pd.read_csv(direccion,delimiter=';')
 
@@ -73,7 +75,9 @@ pc = contador.iloc[-1]['personCount']
 
 
 sql = "INSERT INTO hd_ocupa (FuenteEst,Estimacion,Timestamp) VALUES (%s,%s,%s)"
-val = ("Raspberry6",pc,time.strftime("%Y-%m-%d")+" "+major)
+major = time.strftime("%Y-%m-%d")+" "+major
+#print(major)
+val = ("Raspberry6",pc,major)
 mycursor.execute(sql, val)
 
 mydb.commit()
