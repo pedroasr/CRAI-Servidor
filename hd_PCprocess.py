@@ -1,13 +1,14 @@
-
+import os
+os.system('pip install pandas')
 import pandas as pd
 import time
 import numpy as np
 import sys
 import datetime
-import os
+
 import mysql.connector
 
-os.system('pip install pandas')
+
 
 mydb = mysql.connector.connect(
   host="localhost",
