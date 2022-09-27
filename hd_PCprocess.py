@@ -18,7 +18,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 intervalo = datetime.datetime.now() - datetime.timedelta(minutes=5)
-direccion = "csv/int/pcount_"+intervalo.strftime('%H:%M')+"-"+time.strftime('%H:%M')+".csv"
+direccion = sys.argv[1]
 print(direccion)
 
 while not os.path.exists(direccion):
