@@ -18,7 +18,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 intervalo = datetime.datetime.now() - datetime.timedelta(minutes=5)
-direccion = "csv/int/pcount_"+intervalo.strftime('%H:%M')+"-"+time.strftime('%H:%M')+".csv"
+direccion = "/home/servidoridiit1upct/CRAI-Servidor/csv/int/pcount_"+intervalo.strftime('%H:%M')+"-"+time.strftime('%H:%M')+".csv"
 print(direccion)
 
 while not os.path.exists(direccion):
@@ -70,7 +70,7 @@ for index,row in contador.iterrows():
             if cuenta < 0:
                 cuenta = 0
     contador.iloc[index,contador.columns.get_loc("personCount")]= cuenta
-contador.to_csv("csv/int/"+time.strftime("%Y-%m-%d")+"_contador.csv",sep=',',index=False,mode='w',header=False)
+contador.to_csv("/home/servidoridiit1upct/CRAI-Servidor/csv/int/"+time.strftime("%Y-%m-%d")+"_contador.csv",sep=',',index=False,mode='w',header=False)
 
 pc = contador.iloc[-1]['personCount']
 
