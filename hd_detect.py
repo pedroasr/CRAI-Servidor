@@ -53,5 +53,6 @@ datos_filtrados.to_csv("csv/int/"+time.strftime("%Y-%m-%d")+"_ble.csv",sep=';',i
 
 #datos_filtrados.to_csv(nombre_filter,sep = ';',mode='w',header=True,index=False)
 
-
+print("Data filtering finished, going full AI")
+os.system("ble-estimator-server.py")
 

@@ -3,11 +3,27 @@ import pandas as pd
 import joblib
 import warnings
 import time
+import mysql.connector
 warnings.filterwarnings("ignore")
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="sqlco2",
+  password="sqlpass",
+  database="co2blelr"
+)
+
+mycursor = mydb.cursor()
 
 pd.options.mode.chained_assignment = None
 
+def generateTimeSeriesByHour(data, endHour='21:55:00'):
+    """Función que devuelve una Serie con un Timestamp espaciado en intervalos de 5 minutos dada una hora de comienzo y de fin"""
+    initHour = data.split(" ")[1]
+    end = data.split(" ")[0] + " " + endHour
+    timeSeries = pd.Series(pd.date_range(data, end, freq='5T'))
 
+    return timeSeries
 
 # Este es un dataframe, pero aquí va el que generamos.
 # Importante aclarar el formato del personcount y de la data.
@@ -16,9 +32,13 @@ pd.options.mode.chained_assignment = None
 data = pd.read_csv("csv/int/"+time.strftime("%Y-%m-%d")+"_ble.csv", sep=";",header=['Timestamp int.','Raspberry','Timestamp inicial','Nº Mensajes','MAC','Tipo MAC','Tipo ADV','BLE Size','RSP Size','BLE Data','RSSI promedio'])
 #intervalos de cinco minutos
 pc_data = pd.read_csv("csv/int/"+time.strftime("%Y-%m-%d")+"_contador.csv", sep=";")
-pc_last = pc_data.iloc[-1].tolist() 
-personcount = pd.DataFrame([["12/07/2022  11:00:00", 40, 235]], columns=["Timestamp", "personCount", "Minutes"])
-timeSeries = ["12/07/2022  11:00:00"] #fecha de hoy y la hora 11:00 11:05
+pc_last = pc_data.iloc[-1].tolist()
+major = pc_last[0].split(" ")[1] #Get the last
+
+
+personcount = pd.DataFrame(pc_last, columns=["Timestamp", "personCount", "Minutes"])
+timeSeries = generateTimeSeriesByHour(data.iloc[0]['Timestamp'],major) #fecha de hoy y la hora 11:00 11:05
+
 trainingDataSet = pd.DataFrame(
     columns=["Timestamp", "Person Count", "Minutes", "N MAC TOTAL", "N MAC RA", "N MAC RB", "N MAC RC", "N MAC RD",
              "N MAC RE",
@@ -44,9 +64,9 @@ finalTrainingDataSet = pd.DataFrame(
 finalTrainingSet, finalTrainingDataSet = getTrainingSetFormat(trainingSet, finalTrainingDataSet)
 #TO-DO training data set y final a csv
 # Estos son los estimadores que ya están entrenados
-est = joblib.load('models/HistGradientBoostingRegressor.pkl')
-lgbm = joblib.load('models/LGBMRegressor.pkl')
-rfr = joblib.load('models/RandomForestRegressor.pkl')
+est = joblib.load('ai_models/HistGradientBoostingRegressor.pkl')
+lgbm = joblib.load('ai_models/LGBMRegressor.pkl')
+rfr = joblib.load('ai_models/RandomForestRegressor.pkl')
 
 # Nos quedamos con los valores para estimar
 X = finalTrainingSet.loc[:, (finalTrainingSet.columns != "Timestamp") & (finalTrainingSet.columns != "Person Count")]
@@ -55,3 +75,23 @@ X = finalTrainingSet.loc[:, (finalTrainingSet.columns != "Timestamp") & (finalTr
 predicted_est_y = est.predict(X)
 predicted_lgbm_y = lgbm.predict(X)
 predicted_rfr_y = rfr.predict(X)
+
+print(f"HistGradient: {predicted_est_y}")
+print(f"LGBMRegressor: {predicted_lgbm_y}")
+print(f"RandomForestRegressor: {predicted_rfr_y}")
+
+sql = "INSERT INTO hd_ocupa (FuenteEst,Estimacion,Timestamp) VALUES (%s,%s,%s)"
+major = time.strftime("%Y-%m-%d")+" "+major
+#print(major)
+val = ("HistGradient",predicted_est_y,major)
+mycursor.execute(sql, val)
+mydb.commit()
+
+val = ("LGBM_Regressor",predicted_lgbm_y,major)
+mycursor.execute(sql, val)
+mydb.commit()
+
+val = ("RandomForestRegressor",predicted_rfr_y,major)
+mycursor.execute(sql, val)
+
+mydb.commit()
