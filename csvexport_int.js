@@ -184,6 +184,7 @@ const main = () => {
     wifi();
     ble();
 
+    /*
     var pcount_s = spawn('python3',["./hd_PCprocess.py",
                                 pcount_trg_t]);
 
@@ -191,7 +192,7 @@ const main = () => {
         dataToSend = data.toString()
         console.log('Python Pcount> ' + dataToSend);
         
-    });
+    });*/
     
     var ble_s = spawn('python3',["./hd_detect.py",
                                 ble_trg_t]);
