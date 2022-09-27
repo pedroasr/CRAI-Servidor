@@ -7,6 +7,8 @@ import datetime
 import os
 import mysql.connector
 
+os.system('pip install pandas')
+
 mydb = mysql.connector.connect(
   host="localhost",
   user="sqlco2",

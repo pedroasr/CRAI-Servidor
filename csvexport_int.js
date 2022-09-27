@@ -184,6 +184,7 @@ const main = () => {
     wifi();
     ble();
 
+    console.log(pcount_trg_t)
     exec(`python3 ./hd_PCprocess.py ${pcount_trg_t}`,(error,stdout,stderr)=>{
         if(error !== null){
             console.log("Python error-> "+ error)
