@@ -3,6 +3,7 @@ import pandas as pd
 import time
 import numpy as np
 import sys
+import datetime
 import os
 import mysql.connector
 
@@ -16,17 +17,18 @@ mydb = mysql.connector.connect(
 
 
 mycursor = mydb.cursor()
+intervalo = datetime.datetime.now() - datetime.timedelta(minutes=5)
+direccion = "csv/int/pcount_"+intervalo.strftime('%H:%M')+"-"+time.strftime('%H:%M')+".csv"
+print(direccion)
 
-direccion = sys.argv[1]
-
-
+while not os.path.exists(direccion):
+    time.sleep(5)
 
 fsize = os.path.getsize(direccion)
 #print(fsize)
 
 while fsize == 145:
     fsize = os.path.getsize(direccion)
-    
     time.sleep(10)
 
 #print(fsize)
