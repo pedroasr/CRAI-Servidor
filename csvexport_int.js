@@ -1,5 +1,5 @@
 const fs = require('fs');
-var spawn = require("child_process").spawn;
+const { exec } = require("child_process");
 
 var database = require("./models/database");
 
@@ -184,7 +184,12 @@ const main = () => {
     wifi();
     ble();
 
-    
+    exec(`python3 ./hd_PCprocess.py ${pcount_trg_t}`,(error,stdout,stderr)=>{
+        if(error !== null){
+            console.log("Python error-> "+ error)
+        }
+    })
+    /*
     var pcount_s = spawn('python3',["./hd_PCprocess.py",
                                 pcount_trg_t]);
 
@@ -192,8 +197,9 @@ const main = () => {
         dataToSend = data.toString()
         console.log('Python Pcount> ' + dataToSend);
         
-    });
-    
+    });*/
+
+    /*
     var ble_s = spawn('python3',["./hd_detect.py",
                                 ble_trg_t]);
 
@@ -201,7 +207,7 @@ const main = () => {
         dataToSend = data.toString()
         console.log('Python BLE> ' + dataToSend);
         
-    });
+    });*/
 
     
 
