@@ -1,3 +1,4 @@
+#/usr/bin/python3.8
 from functions import *
 import pandas as pd
 import joblib
@@ -31,8 +32,8 @@ def generateTimeSeriesByHour(data, endHour='21:55:00'):
 # Importante aclarar el formato del personcount y de la data.
 # timeSeries es la lista con todos los timestamps hasta el momento. Mejor si incluye fecha y hora, más fácil
 
-#ruta = "csv/int/"+time.strftime("%Y-%m-%d")
-ruta = "csv/int/2022-09-28"
+ruta = "csv/int/"+time.strftime("%Y-%m-%d")
+#ruta = "csv/int/2022-09-28"
 
 data = pd.read_csv(ruta+"_ble.csv", sep=";")
 data.columns = ['Timestamp int.','Raspberry','Timestamp inicial','Nº Mensajes','MAC','Tipo MAC','Tipo ADV','BLE Size','RSP Size','BLE Data','RSSI promedio']

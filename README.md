@@ -8,6 +8,13 @@
     - nodejs
     - git
     - pm2
+    - Python3.8
+        - pandas
+        - numpy
+        - joblib
+        - mysql-connector-python
+        - scikit-learn v0.23.1
+        - lightgbm v2.3.1
  
 ### Descargar repositorio:
 
