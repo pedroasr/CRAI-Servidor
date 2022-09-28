@@ -177,8 +177,13 @@ def getTrainingDataset(data, personCount, timeSeries, trainingDataSet):
                "N MAC DOS INTERVALOS ANTERIORES"]
 
     timeSeries = pd.to_datetime(timeSeries, dayfirst=True)
+    print(data)
+    print("---")
     dataNow = data.loc[data["Timestamp"] == timeSeries[-1]]
+    print(timeSeries[-1])
+    print(f"->{dataNow}")
     dataGroup = dataNow.groupby("Timestamp").nunique()
+    #print(dataGroup)
     totalMAC = dataGroup["MAC"][0]
 
     totalMACRA, totalMACRB, totalMACRC, totalMACRD, totalMACRE = getTotalDevicesByRaspberry(dataNow)
