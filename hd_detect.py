@@ -49,10 +49,11 @@ for index, row in datos_ble.iterrows():
 #Now dont save in csv
 datos_filtrados['RSSI promedio'] = datos_filtrados['RSSI promedio']/datos_filtrados['Nº Mensajes']
 
-datos_filtrados.to_csv("csv/int/"+time.strftime("%Y-%m-%d")+"_ble.csv",sep=';',index=False,mode='a',header=False)
+file_dst = "csv/int/"+time.strftime("%Y-%m-%d")+"_ble.csv"
+datos_filtrados.to_csv(file_dst,sep=';',index=False,mode='a',header=False)
 
 #datos_filtrados.to_csv(nombre_filter,sep = ';',mode='w',header=True,index=False)
 
 print("Data filtering finished, going full AI")
-os.system("ble-estimator-server.py")
+os.system(f"python3.8 ble-estimator-server.py {file_dst}")
 

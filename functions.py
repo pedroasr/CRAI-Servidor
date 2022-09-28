@@ -33,11 +33,33 @@ def getTotalDevicesByRaspberry(data):
 
     dataInterval1, dataInterval2, dataInterval3, dataInterval4, dataInterval5 = parseDataByRaspberryTime(data)
 
-    totalMACRA = dataInterval1["MAC"].values[0]
-    totalMACRB = dataInterval2["MAC"].values[0]
-    totalMACRC = dataInterval3["MAC"].values[0]
-    totalMACRD = dataInterval4["MAC"].values[0]
-    totalMACRE = dataInterval5["MAC"].values[0]
+    try:
+        totalMACRA = dataInterval1["MAC"].values[0]
+    except:
+        totalMACRA = 0
+    #totalMACRB = dataInterval2["MAC"].values[0]
+    #totalMACRC = dataInterval3["MAC"].values[0]
+    #totalMACRD = dataInterval4["MAC"].values[0]
+    #totalMACRE = dataInterval5["MAC"].values[0]
+    try:
+        totalMACRB = dataInterval2["MAC"].values[0]
+    except:
+        totalMACRB = 0
+    
+    try:
+        totalMACRC = dataInterval3["MAC"].values[0]
+    except:
+        totalMACRC = 0
+    
+    try:
+        totalMACRD = dataInterval4["MAC"].values[0]
+    except:
+        totalMACRD = 0
+    
+    try:
+        totalMACRE = dataInterval5["MAC"].values[0]
+    except:
+        totalMACRE = 0
 
     return totalMACRA, totalMACRB, totalMACRC, totalMACRD, totalMACRE
 

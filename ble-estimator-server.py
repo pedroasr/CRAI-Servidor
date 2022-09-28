@@ -6,6 +6,7 @@ import joblib
 import warnings
 import time
 import numpy as np
+import sys
 import mysql.connector
 
 warnings.filterwarnings("ignore")
@@ -34,13 +35,14 @@ def generateTimeSeriesByHour(data, endHour='21:55:00'):
 # Importante aclarar el formato del personcount y de la data.
 # timeSeries es la lista con todos los timestamps hasta el momento. Mejor si incluye fecha y hora, más fácil
 
-ruta = "csv/int/"+time.strftime("%Y-%m-%d")
+#ruta = "csv/int/"+time.strftime("%Y-%m-%d")
 #ruta = "test/2022-09-28"
+ruta = sys.argv[1]
 
-data = pd.read_csv(ruta+"_ble.csv", sep=";")
+data = pd.read_csv(ruta, sep=";")
 data.columns = ['Timestamp int.','Raspberry','Timestamp inicial','Nº Mensajes','MAC','Tipo MAC','Tipo ADV','BLE Size','RSP Size','BLE Data','RSSI promedio']
 #intervalos de cinco minutos
-pc_data = pd.read_csv(ruta+"_contador.csv", sep=";")
+pc_data = pd.read_csv(ruta.split("_")[0]+"_contador.csv", sep=";")
 pc_last = pc_data.iloc[-2].tolist()
 major = pc_last[0].split(" ")[1] #Get the last
 
