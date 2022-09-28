@@ -17,7 +17,7 @@ if (interval > 60){
 
 
 const puertadatos = database.getCollection('DoorSensors')
-const bledatos = database.getCollection('BLE')
+const bledatos = database.getCollection('BLE2')
 const wifidatos = database.getCollection('wifi')
 
 //let cabecera = 'Fecha;Hora;Evento In-Out(1/0);Cont. D-In total;Cont. I-In total;Total IN;Cont. D-out total;Cont. I-Out total;Total OUT;Estimación nº Personas\r\n'
@@ -189,6 +189,7 @@ const main = () => {
         if(error !== null){
             console.log("Python error PC-> "+ error)
         }
+        console.log(stdout.toString())
     })
     
     console.log(ble_trg_t)
@@ -196,6 +197,7 @@ const main = () => {
         if(error !== null){
             console.log("Python error BLE-> "+ error)
         }
+        console.log(stdout.toString())
     })
 
 

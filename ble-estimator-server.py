@@ -1,4 +1,5 @@
-#/usr/bin/python3.8
+#!./py3env/bin/python
+
 from functions import *
 import pandas as pd
 import joblib
@@ -16,6 +17,7 @@ mydb = mysql.connector.connect(
   database="co2blelr"
 )
 
+print("AI Starts")
 mycursor = mydb.cursor()
 
 pd.options.mode.chained_assignment = None
@@ -33,7 +35,7 @@ def generateTimeSeriesByHour(data, endHour='21:55:00'):
 # timeSeries es la lista con todos los timestamps hasta el momento. Mejor si incluye fecha y hora, más fácil
 
 ruta = "csv/int/"+time.strftime("%Y-%m-%d")
-#ruta = "csv/int/2022-09-28"
+#ruta = "test/2022-09-28"
 
 data = pd.read_csv(ruta+"_ble.csv", sep=";")
 data.columns = ['Timestamp int.','Raspberry','Timestamp inicial','Nº Mensajes','MAC','Tipo MAC','Tipo ADV','BLE Size','RSP Size','BLE Data','RSSI promedio']
@@ -90,7 +92,7 @@ print(f"LGBMRegressor: {predicted_lgbm_y}")
 print(f"RandomForestRegressor: {predicted_rfr_y}")
 
 sql = "INSERT INTO hd_ocupa (FuenteEst,Estimacion,Timestamp) VALUES (%s,%s,%s)"
-major = time.strftime("%Y-%m-%d")+" "+major
+major = time.strftime("%Y-%m-%d")+" "+(pc_data.iloc[-1].tolist())[0].split(" ")[1]
 #print(major)
 val = ("HistGradient",predicted_est_y,major)
 mycursor.execute(sql, val)

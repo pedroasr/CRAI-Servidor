@@ -39,7 +39,7 @@ function unchecksen(){
 let topics = ['CRAIUPCT_co2ble','CRAIUPCTPersonCount','CRAIUPCT_BLEdata','CRAIUPCT_WifiData','keepalive','CRAIUPCT_co2']
 //const client = mqtt.connect('mqtt://localhost'); 
 const door = database.getCollection('DoorSensors')
-const ble = database.getCollection('BLE')
+const ble = database.getCollection('BLE2')
 const wifi = database.getCollection('wifi')
 const monitor = database.getCollection('monitor')
 const esp = database.getCollection('AirMeasurement')

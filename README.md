@@ -60,3 +60,8 @@
     sudo pm2 save
     
  
+#### Python 3.8 instalation
+
+sudo apt-get install python3.8
+sudo apt-get install python3.8-distutils ó python3.8 -m pip install --upgrade pip
+sudo pip install [libraries]
