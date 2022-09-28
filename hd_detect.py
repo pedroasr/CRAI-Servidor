@@ -8,7 +8,7 @@ print("Hello from python!")
 #trg_file = time.strftime('%Y-%m-%d ', time.localtime())
 
 
-print("BLE File: " + sys.argv[1])
+#print("BLE File: " + sys.argv[1])
 
 nombre_target = sys.argv[1]
 
@@ -54,6 +54,6 @@ datos_filtrados.to_csv(file_dst,sep=';',index=False,mode='a',header=False)
 
 #datos_filtrados.to_csv(nombre_filter,sep = ';',mode='w',header=True,index=False)
 
-print("Data filtering finished, going full AI")
-os.system(f"python3.8 ble-estimator-server.py {file_dst}")
+#print("Data filtering finished, going full AI")
+os.system(f"su - servidoridiit1upct -c 'python3.8 ble-estimator-server.py {file_dst}'")
 

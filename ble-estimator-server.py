@@ -18,7 +18,7 @@ mydb = mysql.connector.connect(
   database="co2blelr"
 )
 
-print("AI Starts")
+#print("AI Starts")
 mycursor = mydb.cursor()
 
 pd.options.mode.chained_assignment = None
@@ -46,10 +46,10 @@ pc_data = pd.read_csv(ruta.split("_")[0]+"_contador.csv", sep=";")
 pc_last = pc_data.iloc[-2].tolist()
 major = pc_last[0].split(" ")[1] #Get the last
 
-print(pc_last)
+#print(pc_last)
 personcount = pd.DataFrame([pc_last], columns=["Timestamp", "personCount", "Minutes"])
 timeSeries = generateTimeSeriesByHour(data.iloc[0]['Timestamp int.'],major) #fecha de hoy y la hora 11:00 11:05
-print(timeSeries)
+#print(timeSeries)
 trainingDataSet = pd.DataFrame(
     columns=["Timestamp", "Person Count", "Minutes", "N MAC TOTAL", "N MAC RA", "N MAC RB", "N MAC RC", "N MAC RD",
              "N MAC RE",

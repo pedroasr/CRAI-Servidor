@@ -184,7 +184,7 @@ const main = () => {
     wifi();
     ble();
 
-    console.log(pcount_trg_t)
+    //console.log(pcount_trg_t)
     exec(`python3.8 ./hd_PCprocess.py ${pcount_trg_t}`,(error,stdout,stderr)=>{
         if(error !== null){
             console.log("Python error PC-> "+ error)
@@ -192,7 +192,7 @@ const main = () => {
         console.log(stdout.toString())
     })
     
-    console.log(ble_trg_t)
+    //console.log(ble_trg_t)
     exec(`python3.8 ./hd_detect.py ${ble_trg_t}`,(error,stdout,stderr)=>{
         if(error !== null){
             console.log("Python error BLE-> "+ error)
