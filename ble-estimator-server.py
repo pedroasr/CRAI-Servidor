@@ -29,16 +29,20 @@ def generateTimeSeriesByHour(data, endHour='21:55:00'):
 # Importante aclarar el formato del personcount y de la data.
 # timeSeries es la lista con todos los timestamps hasta el momento. Mejor si incluye fecha y hora, más fácil
 
-data = pd.read_csv("csv/int/"+time.strftime("%Y-%m-%d")+"_ble.csv", sep=";",header=['Timestamp int.','Raspberry','Timestamp inicial','Nº Mensajes','MAC','Tipo MAC','Tipo ADV','BLE Size','RSP Size','BLE Data','RSSI promedio'])
+#ruta = "csv/int/"+time.strftime("%Y-%m-%d")
+ruta = "csv/int/2022-09-28"
+
+data = pd.read_csv(ruta+"_ble.csv", sep=";")
+data.columns = ['Timestamp int.','Raspberry','Timestamp inicial','Nº Mensajes','MAC','Tipo MAC','Tipo ADV','BLE Size','RSP Size','BLE Data','RSSI promedio']
 #intervalos de cinco minutos
-pc_data = pd.read_csv("csv/int/"+time.strftime("%Y-%m-%d")+"_contador.csv", sep=";")
+pc_data = pd.read_csv(ruta+"_contador.csv", sep=";")
 pc_last = pc_data.iloc[-1].tolist()
 major = pc_last[0].split(" ")[1] #Get the last
 
 
-personcount = pd.DataFrame(pc_last, columns=["Timestamp", "personCount", "Minutes"])
-timeSeries = generateTimeSeriesByHour(data.iloc[0]['Timestamp'],major) #fecha de hoy y la hora 11:00 11:05
-
+personcount = pd.DataFrame([pc_last], columns=["Timestamp", "personCount", "Minutes"])
+timeSeries = generateTimeSeriesByHour(data.iloc[0]['Timestamp int.'],major) #fecha de hoy y la hora 11:00 11:05
+print(timeSeries.iloc[-1])
 trainingDataSet = pd.DataFrame(
     columns=["Timestamp", "Person Count", "Minutes", "N MAC TOTAL", "N MAC RA", "N MAC RB", "N MAC RC", "N MAC RD",
              "N MAC RE",
