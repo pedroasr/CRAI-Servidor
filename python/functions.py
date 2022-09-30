@@ -1,5 +1,13 @@
 import pandas as pd
-import numpy as np
+
+
+def generateTimeSeriesByHour(data, endHour='21:55:00'):
+    """Función que devuelve una Serie con un Timestamp espaciado en intervalos de 5 minutos dada una hora de comienzo y de fin"""
+    initHour = data.split(" ")[1]
+    end = data.split(" ")[0] + " " + endHour
+    timeSeries = pd.Series(pd.date_range(data, end, freq='5T')).tolist()
+
+    return timeSeries
 
 
 def parseDataByRaspberry(data):
@@ -37,25 +45,22 @@ def getTotalDevicesByRaspberry(data):
         totalMACRA = dataInterval1["MAC"].values[0]
     except:
         totalMACRA = 0
-    #totalMACRB = dataInterval2["MAC"].values[0]
-    #totalMACRC = dataInterval3["MAC"].values[0]
-    #totalMACRD = dataInterval4["MAC"].values[0]
-    #totalMACRE = dataInterval5["MAC"].values[0]
+
     try:
         totalMACRB = dataInterval2["MAC"].values[0]
     except:
         totalMACRB = 0
-    
+
     try:
         totalMACRC = dataInterval3["MAC"].values[0]
     except:
         totalMACRC = 0
-    
+
     try:
         totalMACRD = dataInterval4["MAC"].values[0]
     except:
         totalMACRD = 0
-    
+
     try:
         totalMACRE = dataInterval5["MAC"].values[0]
     except:
@@ -180,18 +185,19 @@ def getTotalDevicesInTwoPreviousIntervals(data, timeSeries):
         count = 0
         for mac in uniqueMAC:
             if len(groupToCheck.loc[groupToCheck["MAC"] == mac]) != 0 and \
-               len(groupToCheckPrevious.loc[groupToCheckPrevious["MAC"] == mac]) != 0:
+                    len(groupToCheckPrevious.loc[groupToCheckPrevious["MAC"] == mac]) != 0:
                 count = count + 1
         totalMACTwoPreviousInterval = count
 
     return totalMACTwoPreviousInterval
 
 
-def getTrainingDataset(data, personCount, timeSeries, trainingDataSet):
+def getTrainingDataset(data, personCount, timeSeries):
     """Función que devuelve un conjunto de datos para el algoritmo de Machine Learning y un dataframe con los valores
     acumulados hasta ese momento"""
 
-    columns = ["Timestamp", "Person Count", "Minutes", "N MAC TOTAL", "N MAC RA", "N MAC RB", "N MAC RC", "N MAC RD", "N MAC RE",
+    columns = ["Timestamp", "Person Count", "Minutes", "N MAC TOTAL", "N MAC RA", "N MAC RB", "N MAC RC", "N MAC RD",
+               "N MAC RE",
                "N MAC RDE", "N MAC RCE", "N MAC RCDE", "N MAC RBE", "N MAC MEN RA 10", "N MAC MEN RA 10-30",
                "N MAC MEN RA 30", "N MAC MEN RB 10", "N MAC MEN RB 10-30", "N MAC MEN RB 30", "N MAC MEN RC 10",
                "N MAC MEN RC 10-30", "N MAC MEN RC 30", "N MAC MEN RD 10", "N MAC MEN RD 10-30", "N MAC MEN RD 30",
@@ -205,7 +211,7 @@ def getTrainingDataset(data, personCount, timeSeries, trainingDataSet):
     print(timeSeries[-1])
     print(f"->{dataNow}")
     dataGroup = dataNow.groupby("Timestamp").nunique()
-    #print(dataGroup)
+
     totalMAC = dataGroup["MAC"][0]
 
     totalMACRA, totalMACRB, totalMACRC, totalMACRD, totalMACRE = getTotalDevicesByRaspberry(dataNow)
@@ -221,19 +227,19 @@ def getTrainingDataset(data, personCount, timeSeries, trainingDataSet):
     totalMACTwoPreviousInterval = getTotalDevicesInTwoPreviousIntervals(data, timeSeries)
 
     timestamp = dataNow["Timestamp"].dt.strftime('%Y-%m-%d %H:%M:%S')
-    data = [timestamp.values[0], personCount["personCount"][0], personCount["Minutes"].values[0], totalMAC, totalMACRA, totalMACRB,
+    data = [timestamp.values[0], personCount["personCount"][0], personCount["Minutes"].values[0], totalMAC, totalMACRA,
+            totalMACRB,
             totalMACRC, totalMACRD, totalMACRE, totalMACRDE, totalMACRCE, totalMACRCDE, totalMACRBE, totalMACRA_10,
             totalMACRA_1030, totalMACRA_30, totalMACRB_10, totalMACRB_1030, totalMACRB_30, totalMACRC_10,
             totalMACRC_1030, totalMACRC_30, totalMACRD_10, totalMACRD_1030, totalMACRD_30, totalMACRE_10,
             totalMACRE_1030, totalMACRE_30, totalMACPreviousInterval, totalMACTwoPreviousInterval]
 
     trainingSet = pd.DataFrame([data], columns=columns)
-    trainingDataSet = pd.concat([trainingDataSet, trainingSet], ignore_index=True)
 
-    return trainingSet, trainingDataSet
+    return trainingSet
 
 
-def getTrainingSetFormat(trainingSet, finalTrainingDataSet, columns=None):
+def getTrainingSetFormat(trainingSet, columns=None):
     """Función que devuelve un Dataframe con las columnas incluidas en el argumento columns que serán las que reciba el
     estimador finalmente. También devuelve el histórico de los anteriores resultados."""
 
@@ -242,11 +248,10 @@ def getTrainingSetFormat(trainingSet, finalTrainingDataSet, columns=None):
                    "N MAC RBE", "N MAC MEN RA 10", "N MAC MEN RB 10", "N MAC MEN RC 10", "N MAC MEN RD 10",
                    "N MAC MEN RE 10", "N MAC INTERVALO ANTERIOR", "N MAC DOS INTERVALOS ANTERIORES"]
 
-    finalTrainingSet = pd.DataFrame(trainingSet[["Timestamp", "Person Count", "Minutes"]], columns=["Timestamp", "Person Count", "Minutes"])
+    finalTrainingSet = pd.DataFrame(trainingSet[["Timestamp", "Person Count", "Minutes"]],
+                                    columns=["Timestamp", "Person Count", "Minutes"])
     finalTrainingSet = pd.concat([finalTrainingSet, trainingSet[columns]], axis=1)
 
     finalTrainingSet["Timestamp"] = pd.to_datetime(finalTrainingSet["Timestamp"])
 
-    finalTrainingDataSet = pd.concat([finalTrainingDataSet, finalTrainingSet])
-
-    return finalTrainingSet, finalTrainingDataSet
+    return finalTrainingSet

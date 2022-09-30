@@ -8,3 +8,4 @@ ignore.py
 __pycache__
 certs
 ignore.js
+/.idea
