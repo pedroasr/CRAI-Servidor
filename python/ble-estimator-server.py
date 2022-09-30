@@ -50,6 +50,7 @@ data.replace(
     {"Raspberry1": "Raspberry A", "Raspberry2": "Raspberry D", "Raspberry3": "Raspberry B", "Raspberry5": "Raspberry E",
      "Raspberry7": "Raspberry C"}, inplace=True)
 
+#Guardamos el dataset
 # trainingSet es el que se va a usar para meter al estimador.
 # trainingDataSet es el dataframe donde se irán almacenando los valores que le meteremos al estimador para tener un historial.
 trainingSet = getTrainingDataset(data, personcount, timeSeries)
