@@ -38,8 +38,8 @@ data.columns = ['Timestamp int.', 'Raspberry', 'Timestamp inicial', 'Nº Mensaje
 print(ruta)
 pc_data = pd.read_csv(ruta.split("_ble")[0] + "_contador.csv", sep=";")
 pc_last = pc_data.iloc[-2].tolist()
-major = pc_last[0].split(" ")[1]  # Get the last
-
+date_hour = pc_last[0].split(" ")  # Get the last
+major = date_hour[1]
 
 personcount = pd.DataFrame([pc_last], columns=["Timestamp", "personCount", "Minutes"])
 timeSeries = generateTimeSeriesByHour(data.iloc[0]['Timestamp int.'], major)  # fecha de hoy y la hora 11:00 11:05
@@ -51,12 +51,19 @@ data.replace(
     {"Raspberry1": "Raspberry A", "Raspberry2": "Raspberry D", "Raspberry3": "Raspberry B", "Raspberry5": "Raspberry E",
      "Raspberry7": "Raspberry C"}, inplace=True)
 
-#Guardamos el dataset
+# Guardamos el dataset
 # trainingSet es el que se va a usar para meter al estimador.
 # trainingDataSet es el dataframe donde se irán almacenando los valores que le meteremos al estimador para tener un historial.
 trainingSet = getTrainingDataset(data, personcount, timeSeries)
 
+pathTraining = "python/doc/dataframe_online/training-dataset_" + date_hour[0] + ".csv"
+trainingSet.to_csv(pathTraining, mode="a", sep=";", index=False)
+
 finalTrainingSet = getTrainingSetFormat(trainingSet)
+
+pathFinalTraining = "python/doc/dataframe_online/final-training-dataset_" + date_hour[0] + ".csv"
+finalTrainingSet.to_csv(pathFinalTraining, mode="a", sep=";", index=False)
+
 # TO-DO training data set y final a csv
 # Estos son los estimadores que ya están entrenados
 est = joblib.load('python/ai_models/HistGradientBoostingRegressor.pkl')

@@ -83,92 +83,96 @@ def get_bulk_auto(target, oids, credentials, count_oid, start_from=0, port=161,
 
 def crearcsv():
     hora = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-#Peticiones snmp de mac e ip con otro metodo
-    ip="192.168.89.1"
-    community="proyecto"
-
+    # Peticiones snmp de mac e ip con otro metodo
+    ip = "192.168.89.1"
+    community = "proyecto"
 
     generator = cmdgen.CommandGenerator()
-    comm_data = cmdgen.CommunityData("server", community, 1) # 1 means version SNMP v2c
+    comm_data = cmdgen.CommunityData("server", community, 1)  # 1 means version SNMP v2c
     transport = cmdgen.UdpTransportTarget((ip, 161))
 
     real_fun = getattr(generator, "nextCmd")
-#IP usuario
-    oidipusr=(1,3,6,1,4,1,14823,2,3,3,1,2,4,1,3)
+    # IP usuario
+    oidipusr = (1, 3, 6, 1, 4, 1, 14823, 2, 3, 3, 1, 2, 4, 1, 3)
     IPusr = (errorIndication, errorStatus, errorIndex, varBinds) = real_fun(comm_data, transport, oidipusr)
-    if not errorIndication is None  or errorStatus is True:
-        print ("Error: %s %s %s %s" % IPusr)
+    if not errorIndication is None or errorStatus is True:
+        print("Error: %s %s %s %s" % IPusr)
     else:
         c = int(1)
-        n = len(varBinds)+1
+        n = len(varBinds) + 1
         IPuser = [None] * n
         IPuser[0] = 0
 
         for var_bind in varBinds:
-            IPuser[c] =[x.prettyPrint() for x in var_bind]
-            c=c+1
+            IPuser[c] = [x.prettyPrint() for x in var_bind]
+            c = c + 1
     ##MACC
-    oidmacuser=(1,3,6,1,4,1,14823,2,3,3,1,2,4,1,1)
+    oidmacuser = (1, 3, 6, 1, 4, 1, 14823, 2, 3, 3, 1, 2, 4, 1, 1)
     MAC = (errorIndication, errorStatus, errorIndex, varBinds) = real_fun(comm_data, transport, oidmacuser)
 
-    if not errorIndication is None  or errorStatus is True:
-        print ("Error: %s %s %s %s" % MAC)
+    if not errorIndication is None or errorStatus is True:
+        print("Error: %s %s %s %s" % MAC)
     else:
         c = int(1)
-        n = len(varBinds)+1
+        n = len(varBinds) + 1
         MACUSR = [None] * n
         MACUSR[0] = 0
 
         for var_bind in varBinds:
-            MACUSR[c] =[x.prettyPrint() for x in var_bind]
-            c=c+1
+            MACUSR[c] = [x.prettyPrint() for x in var_bind]
+            c = c + 1
     ##MACWLAN
-    oidmacWLAN=(1,3,6,1,4,1,14823,2,3,3,1,2,4,1,2)
+    oidmacWLAN = (1, 3, 6, 1, 4, 1, 14823, 2, 3, 3, 1, 2, 4, 1, 2)
     MACWLAN = (errorIndication, errorStatus, errorIndex, varBinds) = real_fun(comm_data, transport, oidmacWLAN)
 
-    if not errorIndication is None  or errorStatus is True:
-        print ("Error: %s %s %s %s" % MACWLAN)
+    if not errorIndication is None or errorStatus is True:
+        print("Error: %s %s %s %s" % MACWLAN)
     else:
         c = int(1)
-        n = len(varBinds)+1
+        n = len(varBinds) + 1
         MACW = [None] * n
         MACW[0] = 0
 
         for var_bind in varBinds:
-            MACW[c] =[x.prettyPrint() for x in var_bind]
-            c=c+1
-    
-#IP Punto de acceso AP
-    oidipap=(1,3,6,1,4,1,14823,2,3,3,1,2,4,1,4)
+            MACW[c] = [x.prettyPrint() for x in var_bind]
+            c = c + 1
+
+    # IP Punto de acceso AP
+    oidipap = (1, 3, 6, 1, 4, 1, 14823, 2, 3, 3, 1, 2, 4, 1, 4)
     IPap = (errorIndication, errorStatus, errorIndex, varBinds) = real_fun(comm_data, transport, oidipap)
-    if not errorIndication is None  or errorStatus is True:
-        print ("Error: %s %s %s %s" % IPap)
+    if not errorIndication is None or errorStatus is True:
+        print("Error: %s %s %s %s" % IPap)
     else:
         c = int(1)
-        n = len(varBinds)+1
+        n = len(varBinds) + 1
         IPAP = [None] * n
         IPAP[0] = 0
 
         for var_bind in varBinds:
-            IPAP[c] =[x.prettyPrint() for x in var_bind]
-            c=c+1
-
-
-
+            IPAP[c] = [x.prettyPrint() for x in var_bind]
+            c = c + 1
 
     # Hacemos la peticion SNMP al Servidor de todos los parametros que queremos
     nentradas = len(IPuser)
     Name = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.5'], hlapi.CommunityData('proyecto'), nentradas)
     SO = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.6'], hlapi.CommunityData('proyecto'), nentradas)
     ruido = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.7'], hlapi.CommunityData('proyecto'), nentradas)
-    TXDataFr = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.8'], hlapi.CommunityData('proyecto'), nentradas)
-    TXDataBy = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.9'], hlapi.CommunityData('proyecto'), nentradas)
-    TXRetries = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.10'], hlapi.CommunityData('proyecto'), nentradas)
-    TXRate = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.11'], hlapi.CommunityData('proyecto'), nentradas)
-    RXDataFr = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.12'], hlapi.CommunityData('proyecto'), nentradas)
-    RXDataBy = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.13'], hlapi.CommunityData('proyecto'), nentradas)
-    RXRetries = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.14'], hlapi.CommunityData('proyecto'), nentradas)
-    RXRate = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.15'], hlapi.CommunityData('proyecto'), nentradas)
+    TXDataFr = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.8'], hlapi.CommunityData('proyecto'),
+                        nentradas)
+    TXDataBy = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.9'], hlapi.CommunityData('proyecto'),
+                        nentradas)
+    TXRetries = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.10'], hlapi.CommunityData('proyecto'),
+                         nentradas)
+    TXRate = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.11'], hlapi.CommunityData('proyecto'),
+                      nentradas)
+    RXDataFr = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.12'], hlapi.CommunityData('proyecto'),
+                        nentradas)
+    RXDataBy = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.13'], hlapi.CommunityData('proyecto'),
+                        nentradas)
+    RXRetries = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.14'], hlapi.CommunityData('proyecto'),
+                         nentradas)
+    RXRate = get_bulk('192.168.89.1', ['1.3.6.1.4.1.14823.2.3.3.1.2.4.1.15'], hlapi.CommunityData('proyecto'),
+                      nentradas)
 
     # hora
     c = int(1)
@@ -191,7 +195,7 @@ def crearcsv():
             nombre[c] = "{1}".format(k, v)
         c = c + 1
 
-    #print(Name)
+    # print(Name)
 
     # SO
     c = int(1)
@@ -304,21 +308,27 @@ def crearcsv():
         c = c + 1
     # print(RRate)
     # Generamos el Dataframe con cada una de las peticiones que hemos realizado al servidor
-    file_name = "eduroam/Eduroam_"+time.strftime('%d%m%Y', time.localtime())+".csv" #Nombre del archivo
-    data = [timestamp, MACUSR, MACW, IPuser,IPAP, nombre, sistema, snr, TXframes, TXBytes, TRetries, TRate, RXframes, RXBytes, RRetries, RRate]
+    file_name = "eduroam/Eduroam_" + time.strftime('%d%m%Y', time.localtime()) + ".csv"  # Nombre del archivo
+    data = [timestamp, MACUSR, MACW, IPuser, IPAP, nombre, sistema, snr, TXframes, TXBytes, TRetries, TRate, RXframes,
+            RXBytes, RRetries, RRate]
 
-    df = pd.DataFrame(data, index=['timestamp', 'MAC','MACWLAN', 'IP', 'IPAP', 'Nombre', 'sistema operativo', 'relacion SN', 'TXDataFr', 'TXDataBy',
-                                   'TXRetries', 'TXRate', 'RXDataFr', 'RXDataBy', 'RXRetries', 'RXRate'])
+    df = pd.DataFrame(data,
+                      index=['timestamp', 'MAC', 'MACWLAN', 'IP', 'IPAP', 'Nombre', 'sistema operativo', 'relacion SN',
+                             'TXDataFr', 'TXDataBy',
+                             'TXRetries', 'TXRate', 'RXDataFr', 'RXDataBy', 'RXRetries', 'RXRate'])
     df = df.transpose()
-    df.columns = {'timestamp', 'MAC','MACWLAN', 'IP', 'IPAP', 'Nombre', 'sistema operativo', 'relacion SN', 'TXDataFr', 'TXDataBy',
+    df.columns = {'timestamp', 'MAC', 'MACWLAN', 'IP', 'IPAP', 'Nombre', 'sistema operativo', 'relacion SN', 'TXDataFr',
+                  'TXDataBy',
                   'TXRetries', 'TXRate', 'RXDataFr', 'RXDataBy', 'RXRetries', 'RXRate'}
     with open(file_name, 'a') as f:
         df.to_csv(f, mode='a', header=False)
 
-    #df = pd.read_csv('06122021.csv')
-    #print(df)
+    # df = pd.read_csv('06122021.csv')
+    # print(df)
     print(1)
-#while True:
+
+
+# while True:
 #    try:
 #        crearcsv()
 #        print('recolectando datos del servidor: Espere 3 min ')
@@ -329,6 +339,6 @@ def crearcsv():
 try:
     crearcsv()
     print('recolectando datos del servidor: Espere 3 min ')
-    
+
 except:
     crearcsv()
