@@ -35,7 +35,8 @@ data = pd.read_csv(ruta, sep=";")
 data.columns = ['Timestamp int.', 'Raspberry', 'Timestamp inicial', 'Nº Mensajes', 'MAC', 'Tipo MAC', 'Tipo ADV',
                 'BLE Size', 'RSP Size', 'BLE Data', 'RSSI promedio']
 # intervalos de cinco minutos
-pc_data = pd.read_csv(ruta.split("_")[0] + "_contador.csv", sep=";")
+print(ruta)
+pc_data = pd.read_csv(ruta.split("_ble")[0] + "_contador.csv", sep=";")
 pc_last = pc_data.iloc[-2].tolist()
 date_hour = pc_last[0].split(" ")  # Get the last
 major = date_hour[1]
@@ -65,9 +66,9 @@ finalTrainingSet.to_csv(pathFinalTraining, mode="a", sep=";", index=False)
 
 # TO-DO training data set y final a csv
 # Estos son los estimadores que ya están entrenados
-est = joblib.load('ai_models/HistGradientBoostingRegressor.pkl')
-lgbm = joblib.load('ai_models/LGBMRegressor.pkl')
-rfr = joblib.load('ai_models/RandomForestRegressor.pkl')
+est = joblib.load('python/ai_models/HistGradientBoostingRegressor.pkl')
+lgbm = joblib.load('python/ai_models/LGBMRegressor.pkl')
+rfr = joblib.load('python/ai_models/RandomForestRegressor.pkl')
 
 # Nos quedamos con los valores para estimar
 X = finalTrainingSet.loc[:, (finalTrainingSet.columns != "Timestamp") & (finalTrainingSet.columns != "Person Count")]

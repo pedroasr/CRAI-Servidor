@@ -36,7 +36,7 @@ nombre_filter = "./csv/off/csv_offline_filter/ble_filter_" + time.strftime('%Y-%
     sampling) + ".csv"
 filter_cols = ['Indice int. muestreo', 'Timestamp int.', 'Raspberry', 'Timestamp inicial', 'Nº Mensajes', 'MAC',
                'Tipo MAC', 'Tipo ADV', 'BLE Size', 'RSP Size', 'BLE Data', 'RSSI promedio']
-nombre_lista = "./doc/mac_filter.csv"
+nombre_lista = "./python/doc/mac_filter.csv"
 nseq = 0
 
 datos_ble = pd.read_csv(nombre_target, sep=';')

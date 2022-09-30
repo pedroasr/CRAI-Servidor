@@ -25,7 +25,7 @@ intervalo = nombre_target.split("-")[0].split("_")[1]
 filter_cols = ['Timestamp int.', 'Raspberry', 'Timestamp inicial', 'Nº Mensajes', 'MAC', 'Tipo MAC', 'Tipo ADV',
                'BLE Size', 'RSP Size', 'BLE Data', 'RSSI promedio']
 # ['Indice int. muestreo',
-nombre_lista = "./doc/mac_filter.csv"
+nombre_lista = "./python/doc/mac_filter.csv"
 # nombre_lista = "./mac_filter.csv"
 
 lista_filtro = pd.read_csv(nombre_lista, delimiter=';')
@@ -56,10 +56,11 @@ for index, row in datos_ble.iterrows():
 # Now don't save in csv
 datos_filtrados['RSSI promedio'] = datos_filtrados['RSSI promedio'] / datos_filtrados['Nº Mensajes']
 
-file_dst = "csv/int/" + time.strftime("%Y-%m-%d") + "_ble.csv"
-datos_filtrados.to_csv(file_dst, sep=';', index=False, mode='a', header=False)
+file_dst = "csv/int/csv_online_filter/"+time.strftime("%Y-%m-%d")+"_ble.csv"
+datos_filtrados.to_csv(file_dst,sep=';',index=False,mode='a',header=False)
 
 # datos_filtrados.to_csv(nombre_filter,sep = ';',mode='w',header=True,index=False)
 
-# print("Data filtering finished, going full AI")
-os.system(f"python3.8 ble-estimator-server.py {file_dst}")
+#print("Data filtering finished, going full AI")
+os.system(f"python3.8 python/ble-estimator-server.py {file_dst}")
+

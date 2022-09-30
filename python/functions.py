@@ -205,11 +205,11 @@ def getTrainingDataset(data, personCount, timeSeries):
                "N MAC DOS INTERVALOS ANTERIORES"]
 
     timeSeries = pd.to_datetime(timeSeries, dayfirst=True)
-    print(data)
-    print("---")
+    #print(data)
+    #print("---")
     dataNow = data.loc[data["Timestamp"] == timeSeries[-1]]
-    print(timeSeries[-1])
-    print(f"->{dataNow}")
+    #print(timeSeries[-1])
+    #print(f"->{dataNow}")
     dataGroup = dataNow.groupby("Timestamp").nunique()
 
     totalMAC = dataGroup["MAC"][0]

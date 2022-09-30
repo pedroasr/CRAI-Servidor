@@ -198,6 +198,7 @@ const main = () => {
             console.log("Python error BLE-> "+ error)
         }
         console.log(stdout.toString())
+        console.log(stderr.toString())
     })
 
 
