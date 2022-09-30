@@ -73,7 +73,7 @@ for index,row in contador.iterrows():
             if cuenta < 0:
                 cuenta = 0
     contador.iloc[index,contador.columns.get_loc("personCount")]= cuenta
-contador.to_csv("csv/int/"+time.strftime("%Y-%m-%d")+"_contador.csv",sep=';',index=False,mode='w',header=True)
+contador.to_csv("csv/int/csv_online_filter/"+time.strftime("%Y-%m-%d")+"_contador.csv",sep=';',index=False,mode='w',header=True)
 
 pc = contador.iloc[-1]['personCount']
 

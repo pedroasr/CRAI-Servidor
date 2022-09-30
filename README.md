@@ -56,7 +56,8 @@
     
     sudo pm2 start app.js
     sudo pm2 start deviceMonitor.js
-    sudo pm2 start csvexport.js
+    sudo pm2 start csvexport_online.js
+    sudo pm2 start csvexport_offline.js
     sudo pm2 save
     
  
