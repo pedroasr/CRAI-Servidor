@@ -64,6 +64,8 @@ data = data.rename(columns={"Timestamp int.": "Timestamp"})#Renombra columna
 
 data.replace({"Raspberry1": "Raspberry A", "Raspberry2": "Raspberry D", "Raspberry3": "Raspberry B", "Raspberry5": "Raspberry E", "Raspberry7": "Raspberry C"}, inplace=True)
 
+#Guardamos el dataset
+trainingDataSet.to_csv("trainingDataSet_"+time.strftime("%Y-%m-%d")+"_BLE.csv",sep=';',index=False,mode='w',header=True)
 # trainingSet es el que se va a usar para meter al estimador.
 # trainingDataSet es el dataframe donde se irán almacenando los valores que le meteremos al estimador para tener un historial.
 trainingSet, trainingDataSet = getTrainingDataset(data, personcount, timeSeries, trainingDataSet)
@@ -76,6 +78,7 @@ finalTrainingDataSet = pd.DataFrame(
 
 finalTrainingSet, finalTrainingDataSet = getTrainingSetFormat(trainingSet, finalTrainingDataSet)
 #TO-DO training data set y final a csv
+finalTrainingDataSet.to_csv("finalTrainingDataSet_"+time.strftime("%Y-%m-%d")+"_BLE.csv",sep=';',index=False,mode='w',header=True)
 # Estos son los estimadores que ya están entrenados
 est = joblib.load('ai_models/HistGradientBoostingRegressor.pkl')
 lgbm = joblib.load('ai_models/LGBMRegressor.pkl')

@@ -27,9 +27,9 @@ let cabecerawifi = 'Fecha;Hora;Id;Canal;SSID;MAC Origen;RSSI\r\n'
 let cabecerable = 'Fecha;Hora;Id;MAC;Tipo MAC;ADV Size;RSP Size;Tipo ADV;Advertisement;RSSI\r\n'
 
 /* File targets for python scripts */
-wifi_trg = "csv/int/wifi_"
-ble_trg = "csv/int/ble_"
-pcount_trg = "csv/int/pcount_"
+wifi_trg = "csv/int/raw/wifi_"
+ble_trg = "csv/int/raw/ble_"
+pcount_trg = "csv/int/raw/pcount_"
 wifi_trg_t = ""
 ble_trg_t = ""
 pcount_trg_t = ""
@@ -185,7 +185,7 @@ const main = () => {
     ble();
 
     //console.log(pcount_trg_t)
-    exec(`python3.8 ./hd_PCprocess.py ${pcount_trg_t}`,(error,stdout,stderr)=>{
+    exec(`python3.8 ./python/hd_PCprocess.py ${pcount_trg_t}`,(error,stdout,stderr)=>{
         if(error !== null){
             console.log("Python error PC-> "+ error)
         }
@@ -193,7 +193,7 @@ const main = () => {
     })
     
     //console.log(ble_trg_t)
-    exec(`python3.8 ./hd_detect.py ${ble_trg_t}`,(error,stdout,stderr)=>{
+    exec(`python3.8 ./python/hd_detect.py ${ble_trg_t}`,(error,stdout,stderr)=>{
         if(error !== null){
             console.log("Python error BLE-> "+ error)
         }
@@ -232,7 +232,7 @@ const main = () => {
 
 
 var job = new CronJob(
-    `0,5,10,15,20,25,30,35,40,45,50,55 8-22 * * *`,
+    `0,5,10,15,20,25,30,35,40,45,50,55 7-22 * * *`,
     //'00 00 22 * * *',
     main
 );
